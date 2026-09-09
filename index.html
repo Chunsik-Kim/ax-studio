@@ -4,19 +4,24 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>김춘식 — AI/AX 시스템 설계·구축</title>
-<meta name="description" content="김춘식 — AI Agent·Multi-Agent·Claude Code/Codex 기반 AI/AX 시스템 설계·구축·업무자동화 포트폴리오" />
+<meta name="description" content="업무를 분석하고, 사람이 할 일과 AI가 할 일을 다시 설계합니다 — 김춘식 AI/AX 포트폴리오" />
 <style>
   :root{
     --bg: #fafaf9;
     --bg-alt: #ffffff;
     --ink: #1c1c1e;
     --ink-soft: #52525b;
+    --ink-faint: #8a8a92;
     --line: #e4e4e7;
     --accent: #3454d1;
     --accent-soft: #eef1fd;
+    --accent2: #b6501f;
+    --accent2-soft: #fbeee4;
+    --accent3: #1f8a5f;
+    --accent3-soft: #e6f5ee;
     --chip-bg: #f4f4f5;
     --radius: 14px;
-    --maxw: 880px;
+    --maxw: 900px;
   }
   @media (prefers-color-scheme: dark){
     :root{
@@ -24,9 +29,14 @@
       --bg-alt: #1b1b1f;
       --ink: #f2f2f4;
       --ink-soft: #a5a5ad;
+      --ink-faint: #6c6c74;
       --line: #2b2b30;
-      --accent: #7d93ff;
+      --accent: #8ea1ff;
       --accent-soft: #22264a;
+      --accent2: #e2996a;
+      --accent2-soft: #3a2a1e;
+      --accent3: #6fd1a6;
+      --accent3-soft: #143229;
       --chip-bg: #201f24;
     }
   }
@@ -34,92 +44,129 @@
   body{
     margin:0; background:var(--bg); color:var(--ink);
     font-family: "Pretendard","맑은 고딕","Apple SD Gothic Neo",system-ui,-apple-system,sans-serif;
-    line-height:1.65; -webkit-font-smoothing:antialiased;
+    line-height:1.7; -webkit-font-smoothing:antialiased;
   }
   .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
-  header.hero{
-    padding:72px 0 48px; border-bottom:1px solid var(--line);
-  }
-  .hero-inner{display:flex; gap:36px; align-items:center; flex-wrap:wrap;}
+  a{color:var(--accent);}
+
+  /* HERO */
+  header.hero{padding:88px 0 56px; border-bottom:1px solid var(--line);}
+  .hero-inner{display:flex; gap:40px; align-items:center; flex-wrap:wrap;}
   .avatar{
-    width:132px; height:132px; border-radius:50%; overflow:hidden;
-    border:3px solid var(--bg-alt); box-shadow:0 0 0 1px var(--line), 0 12px 30px -12px rgba(0,0,0,.25);
-    flex-shrink:0;
+    width:120px; height:120px; border-radius:50%; overflow:hidden; flex-shrink:0;
+    border:3px solid var(--bg-alt); box-shadow:0 0 0 1px var(--line), 0 14px 34px -14px rgba(0,0,0,.3);
   }
   .avatar img{width:100%; height:100%; object-fit:cover; display:block;}
-  .hero-text{flex:1; min-width:260px;}
-  .eyebrow{
-    display:inline-block; font-size:.78rem; font-weight:600; letter-spacing:.08em;
-    color:var(--accent); text-transform:uppercase; margin-bottom:10px;
-  }
-  h1{font-size:2.1rem; margin:0 0 6px; letter-spacing:-.01em;}
-  .role{font-size:1.15rem; font-weight:600; color:var(--ink); margin:0 0 4px;}
-  .subrole{font-size:.95rem; color:var(--ink-soft); margin:0 0 16px;}
-  .contact-row{display:flex; gap:16px; flex-wrap:wrap; font-size:.88rem; color:var(--ink-soft);}
-  .contact-row a{color:var(--ink-soft); text-decoration:none; border-bottom:1px dotted var(--line);}
-  .contact-row a:hover{color:var(--accent); border-color:var(--accent);}
+  .hero-text{flex:1; min-width:280px;}
+  h1.hero-line{font-size:1.9rem; font-weight:800; line-height:1.4; margin:0 0 14px; letter-spacing:-.01em;}
+  p.hero-sub{font-size:1.02rem; color:var(--ink-soft); max-width:62ch; margin:0 0 16px;}
+  .hero-tags{font-size:.85rem; color:var(--ink-faint); letter-spacing:.02em;}
 
-  section{padding:44px 0; border-bottom:1px solid var(--line);}
+  section{padding:56px 0; border-bottom:1px solid var(--line);}
   section:last-of-type{border-bottom:none;}
-  h2{
-    font-size:.82rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
-    color:var(--accent); margin:0 0 20px;
+  .eyebrow{
+    display:block; font-size:.76rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:10px;
   }
-  p.lead{font-size:1.04rem; color:var(--ink); max-width:70ch;}
-  p.lead + p.lead{margin-top:10px;}
-  .tagline{
-    margin-top:18px; font-size:.92rem; color:var(--ink-soft); font-style:italic;
-    border-left:2px solid var(--accent); padding-left:14px;
-  }
+  h2.sec-title{font-size:1.35rem; font-weight:800; margin:0 0 22px; letter-spacing:-.01em;}
+  p.lead{font-size:1rem; color:var(--ink); max-width:68ch;}
+  p.lead + p.lead{margin-top:12px;}
 
-  .comp-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px;}
-  .comp-card{
+  /* Diagram frame */
+  .diagram{
     background:var(--bg-alt); border:1px solid var(--line); border-radius:var(--radius);
-    padding:16px 18px; font-size:.92rem;
+    padding:22px 18px 14px; margin:26px 0 10px; overflow-x:auto;
   }
+  .diagram svg{display:block; margin:0 auto; max-width:100%; height:auto;}
+  .legend{font-size:.78rem; color:var(--ink-faint); margin-top:10px; line-height:1.9;}
+  .legend b{color:var(--ink-soft); font-weight:700;}
+  .dnode{fill:var(--bg); stroke:var(--line); stroke-width:1.4;}
+  .dnode-accent{fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.4;}
+  .dnode-accent2{fill:var(--accent2-soft); stroke:var(--accent2); stroke-width:1.4;}
+  .dnode-accent3{fill:var(--accent3-soft); stroke:var(--accent3); stroke-width:1.4;}
+  .dtext{fill:var(--ink); font-size:12.5px; font-family:inherit;}
+  .dtext-soft{fill:var(--ink-soft); font-size:11px; font-family:inherit;}
+  .dtext-accent{fill:var(--accent); font-size:11px; font-weight:700; font-family:inherit;}
+  .dline{stroke:var(--ink-faint); stroke-width:1.5; fill:none;}
+  .dline-gov{stroke:var(--accent); stroke-width:1.5; fill:none; stroke-dasharray:5,4;}
+  .dline-exec{stroke:var(--ink-soft); stroke-width:1.8; fill:none;}
+  .dline-auto{stroke:var(--accent3); stroke-width:1.5; fill:none; stroke-dasharray:1,3.5; stroke-linecap:round;}
 
-  .project{
+  /* Matrix table */
+  table.matrix{width:100%; border-collapse:collapse; margin:20px 0 6px; font-size:.88rem;}
+  table.matrix th, table.matrix td{border:1px solid var(--line); padding:9px 12px; text-align:left;}
+  table.matrix th{background:var(--chip-bg); font-weight:700; color:var(--ink-soft); font-size:.78rem; text-transform:uppercase; letter-spacing:.03em;}
+  table.matrix td.hi{color:var(--accent2); font-weight:700;}
+
+  /* Case study card */
+  .case{
     background:var(--bg-alt); border:1px solid var(--line); border-radius:var(--radius);
-    padding:26px 26px 22px; margin-bottom:18px;
+    padding:30px 28px 26px; margin-bottom:22px;
   }
-  .project:last-child{margin-bottom:0;}
-  .project h3{font-size:1.05rem; margin:0 0 6px;}
-  .project .meta{font-size:.82rem; color:var(--ink-soft); margin-bottom:14px;}
-  .stat-row{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px;}
-  .stat{
-    background:var(--accent-soft); color:var(--accent); font-weight:700; font-size:.82rem;
-    padding:6px 12px; border-radius:999px;
+  .case:last-child{margin-bottom:0;}
+  .case h3{font-size:1.15rem; margin:0 0 4px;}
+  .case .case-sub{font-size:.86rem; color:var(--ink-faint); margin-bottom:18px;}
+  .case-steps{display:grid; grid-template-columns:auto 1fr; gap:6px 14px; font-size:.9rem;}
+  .case-steps dt{color:var(--accent); font-weight:700; white-space:nowrap; padding-top:1px;}
+  .case-steps dd{margin:0; color:var(--ink-soft); padding-bottom:10px;}
+  .case-status{
+    margin-top:16px; padding-top:14px; border-top:1px dashed var(--line);
+    font-size:.86rem; color:var(--ink-soft);
   }
-  .project ul{margin:0; padding-left:20px; font-size:.9rem; color:var(--ink-soft);}
-  .project li{margin-bottom:6px;}
-  .project li:last-child{margin-bottom:0;}
+  .case-status b{color:var(--ink);}
 
-  .skills-group{margin-bottom:16px;}
-  .skills-group:last-child{margin-bottom:0;}
-  .skills-label{font-size:.8rem; font-weight:700; color:var(--ink-soft); margin-bottom:8px; text-transform:uppercase; letter-spacing:.06em;}
-  .chip-row{display:flex; flex-wrap:wrap; gap:8px;}
-  .chip{
-    background:var(--chip-bg); border:1px solid var(--line); color:var(--ink);
-    font-size:.82rem; padding:5px 12px; border-radius:8px;
+  /* Principles */
+  .princ-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px;}
+  .princ-card{background:var(--bg-alt); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px;}
+  .princ-card .num{font-size:.72rem; font-weight:800; color:var(--accent); letter-spacing:.06em;}
+  .princ-card p{margin:6px 0 0; font-size:.9rem; color:var(--ink-soft);}
+  details.more-princ{margin-top:20px;}
+  details.more-princ summary{cursor:pointer; font-size:.88rem; color:var(--accent); font-weight:600; padding:4px 0;}
+  details.more-princ ul{margin:14px 0 0; padding-left:20px; font-size:.88rem; color:var(--ink-soft);}
+  details.more-princ li{margin-bottom:8px;}
+
+  /* Roadmap */
+  .road-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px;}
+  .road-card{background:var(--bg-alt); border:1px solid var(--line); border-radius:var(--radius); padding:18px 20px;}
+  .road-card h4{margin:0 0 10px; font-size:.92rem; color:var(--accent);}
+  .road-card ul{margin:0; padding-left:18px; font-size:.86rem; color:var(--ink-soft);}
+  .road-card li{margin-bottom:6px;}
+
+  /* Contribution */
+  .contrib-list{display:grid; gap:10px;}
+  .contrib-item{
+    display:flex; gap:14px; align-items:baseline; background:var(--bg-alt);
+    border:1px solid var(--line); border-radius:10px; padding:14px 18px;
   }
+  .contrib-item .k{font-weight:700; font-size:.92rem; white-space:nowrap; color:var(--ink);}
+  .contrib-item .v{font-size:.86rem; color:var(--ink-soft);}
+  .contrib-note{font-size:.8rem; color:var(--ink-faint); margin-top:14px; font-style:italic;}
 
-  .career-item{padding:14px 0; border-bottom:1px dashed var(--line);}
-  .career-item:last-child{border-bottom:none;}
-  .career-head{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; font-size:.94rem; font-weight:600;}
-  .career-period{color:var(--ink-soft); font-weight:500; font-size:.85rem;}
-  .career-detail{font-size:.86rem; color:var(--ink-soft); margin-top:4px;}
+  /* Proof strip */
+  .proof-strip{display:flex; flex-wrap:wrap; gap:10px;}
+  .proof-chip{
+    background:var(--chip-bg); border:1px solid var(--line); border-radius:8px;
+    padding:8px 14px; font-size:.82rem; color:var(--ink-soft);
+  }
+  .proof-chip b{color:var(--ink); font-weight:700;}
 
-  .edu-item{font-size:.9rem; color:var(--ink-soft); padding:6px 0;}
-  .edu-item b{color:var(--ink); font-weight:600;}
+  /* Evidence */
+  .evidence{
+    background:var(--bg-alt); border:1px solid var(--line); border-radius:var(--radius);
+    padding:18px 20px; margin-top:16px;
+  }
+  .evidence .ev-label{font-size:.74rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:10px;}
+  .evidence ul{margin:0; padding-left:18px; font-size:.84rem; color:var(--ink-soft); font-family:ui-monospace,Consolas,monospace;}
+  .evidence li{margin-bottom:5px;}
 
-  footer{padding:40px 0 60px; text-align:center; color:var(--ink-soft); font-size:.85rem;}
+  footer{padding:44px 0 64px; text-align:center; color:var(--ink-faint); font-size:.84rem;}
   footer a{color:var(--accent); text-decoration:none;}
 
-  @media (max-width:520px){
-    header.hero{padding:48px 0 32px;}
+  @media (max-width:560px){
+    header.hero{padding:56px 0 36px;}
     .hero-inner{flex-direction:column; text-align:center;}
-    .contact-row{justify-content:center;}
-    h1{font-size:1.7rem;}
+    h1.hero-line{font-size:1.5rem;}
+    .case{padding:22px 18px;}
   }
 </style>
 </head>
@@ -129,158 +176,436 @@
   <div class="wrap hero-inner">
     <div class="avatar"><img src="assets/profile.png" alt="김춘식 프로필 사진" /></div>
     <div class="hero-text">
-      <span class="eyebrow">AI / AX Portfolio</span>
-      <h1>김춘식</h1>
-      <p class="role">AI/AX 시스템 설계·구축 · 업무자동화</p>
-      <p class="subrole">AI Agent · Multi-Agent · Claude Code/Codex · Workflow Automation</p>
-      <div class="contact-row">
-        <span>010-5017-4238</span>
-        <a href="mailto:cskim4238@daum.net">cskim4238@daum.net</a>
-        <span>서울시 구로구</span>
-      </div>
+      <h1 class="hero-line">업무를 분석하고, 사람이 할 일과 AI가 할 일을<br/>다시 설계합니다.</h1>
+      <p class="hero-sub">개발·SI·사업운영 경험을 바탕으로 실제 업무를 AI Workspace와 Agent 기반 Workflow로 구조화하고, 다양한 프로젝트에 적용하며 고도화하고 있습니다.</p>
+      <p class="hero-tags">AI/AX 시스템 설계 · 업무자동화 · AI Agent · AI-native Workflow</p>
     </div>
   </div>
 </header>
 
 <main class="wrap">
 
-  <section id="summary">
-    <h2>Summary</h2>
-    <p class="lead">Claude Code·Codex·ChatGPT·OpenClaw를 활용해 15개 이상의 도메인별 AI Workspace와 Multi-Agent 업무환경을 직접 설계·구축·운영하고 있습니다.</p>
-    <p class="lead">현업 업무를 Task 단위로 분해해 사람이 판단할 영역과 AI가 수행할 영역을 구분하는 자동화 설계 방법론을 직접 만들고, 실제 프로젝트에 적용해 검증했습니다.</p>
-    <p class="lead">웹개발·SI/SM·IT기업 운영·영업·고객관리 경험을 바탕으로 기술과 현업 양쪽을 이해하며, AI/AX 시스템 설계·구축 및 업무자동화 역할을 지향합니다.</p>
-    <p class="tagline">희망 역할: AI/AX 시스템 기획·개발 · 업무자동화 · AI Agent/Multi-Agent · AI 서비스·PoC 기획·구축 · AX 컨설팅</p>
+  <!-- WHY -->
+  <section id="why">
+    <span class="eyebrow">Why</span>
+    <h2 class="sec-title">왜 이런 구조를 만들기 시작했나</h2>
+    <p class="lead">웹개발자로 시작해 SI/SM 프로젝트, IT기업 운영, 영업, 고객관리, 사업기획을 거치며 기업 업무는 분리된 Task가 아니라 연속된 프로세스라는 걸 경험했습니다.</p>
+    <p class="lead">생성형 AI로 처음엔 바로 코딩부터 시작했지만, 실제 서비스에는 '무엇을 왜 만드는가, 사용자가 왜 쓸 것인가, 사람이 판단할 부분은 무엇인가, 결과를 어떻게 검증할 것인가'가 코딩보다 먼저 필요하다는 걸 실제 프로젝트에서 겪었습니다.</p>
+    <p class="lead">그 결과 업무영역별로 Context와 역할을 분리한 AI Workspace 구조를 하나씩 발전시켜 왔습니다.</p>
   </section>
 
-  <section id="competencies">
-    <h2>Core Competencies</h2>
-    <div class="comp-grid">
-      <div class="comp-card">15개 이상 도메인 AI Workspace / Multi-Agent 시스템 설계·운영</div>
-      <div class="comp-card">automation-pipeline-design — 자동화 설계 방법론 직접 구축, 실전 3건 적용·검증</div>
-      <div class="comp-card">OpenClaw 기반 AI Agent 3개, Cron Job 11개 상시운영 (Slack/Telegram 자동보고)</div>
-      <div class="comp-card">YouTube Data API 기반 채널 155개 분석, 9단계 Workflow, 실행로그 3,234줄</div>
-      <div class="comp-card">웹개발·SI/SM·IT기업 운영·영업·고객관리 경험</div>
-      <div class="comp-card">실사용 검증 중 PowerShell 예외처리·인코딩 오류 2건 발견→재현→원인분석→수정→재검증</div>
+  <!-- HOW -->
+  <section id="how">
+    <span class="eyebrow">How</span>
+    <h2 class="sec-title">업무를 AI와 사람이 함께 수행하는 구조로 바꾸는 방법</h2>
+    <p class="lead">완성된 독점 방법론은 아닙니다. 실제 운영 경험과 다양한 AX 사례연구를 통해, 현재 다음과 같은 실무적 접근으로 구조화해서 쓰고 있습니다.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 900 90" role="img" aria-label="Understand to Standardize 10단계 흐름">
+        <text x="10" y="20" class="dtext-accent">UNDERSTAND</text>
+        <text x="10" y="36" class="dtext-soft">현재 업무 이해</text>
+        <text x="100" y="52" class="dtext-soft">→</text>
+        <text x="120" y="20" class="dtext-accent">EVIDENCE</text>
+        <text x="120" y="36" class="dtext-soft">문서·로그 확인</text>
+        <text x="205" y="52" class="dtext-soft">→</text>
+        <text x="225" y="20" class="dtext-accent">DECOMPOSE</text>
+        <text x="225" y="36" class="dtext-soft">Task 분해</text>
+        <text x="320" y="52" class="dtext-soft">→</text>
+        <text x="340" y="20" class="dtext-accent">DECIDE</text>
+        <text x="340" y="36" class="dtext-soft">역할 구분</text>
+        <text x="415" y="52" class="dtext-soft">→</text>
+        <text x="435" y="20" class="dtext-accent">DESIGN</text>
+        <text x="435" y="36" class="dtext-soft">구조 설계</text>
+        <text x="510" y="52" class="dtext-soft">→</text>
+        <text x="530" y="20" class="dtext-accent">PILOT</text>
+        <text x="530" y="36" class="dtext-soft">작은 범위 실행</text>
+        <text x="10" y="80" class="dtext-accent">EVALUATE</text>
+        <text x="10" y="96" class="dtext-soft" transform="translate(0,-14)"></text>
+        <text x="100" y="80" class="dtext-soft" transform="translate(0,-14)">→</text>
+      </svg>
+      <div style="font-size:.86rem; color:var(--ink-soft); text-align:center; margin-top:6px;">
+        UNDERSTAND → EVIDENCE → DECOMPOSE → DECIDE → DESIGN → PILOT → EVALUATE → APPROVE → LEARN → STANDARDIZE
+      </div>
+    </div>
+
+    <p class="lead" style="margin-top:18px;">이 접근을 실제 워크스페이스로 구현한 대표 사례가 AX-ARCHITECT의 6단계 진단 방법론(DEFINE→EVIDENCE→DIAGNOSE→DESIGN→EVALUATE→PROVE)이며, 지금까지 13개 사례에 실제 적용했습니다.</p>
+
+    <h3 style="font-size:1rem; margin:32px 0 4px;">Automation Decision Matrix</h3>
+    <p class="lead" style="font-size:.92rem;">실제 업무는 한 가지 기준으로만 나뉘지 않기 때문에, 아래 기준으로 접근 방식과 사람 개입 정도를 함께 판단합니다.</p>
+    <table class="matrix">
+      <tr><th>업무 특성</th><th>우선 접근</th><th>사람 개입</th></tr>
+      <tr><td>규칙이 명확</td><td>Script / Automation</td><td>낮음</td></tr>
+      <tr><td>정기 반복</td><td>Scheduler / Cron</td><td>모니터링</td></tr>
+      <tr><td>Data·API 연결</td><td>API Workflow</td><td>예외 확인</td></tr>
+      <tr><td>Context 판단 필요</td><td>AI Agent</td><td>검토</td></tr>
+      <tr><td>복수 역할 협업</td><td>Multi-Agent / Worker</td><td>조정</td></tr>
+      <tr><td>고위험 의사결정</td><td>AI Support</td><td class="hi">최종 승인 필수</td></tr>
+      <tr><td>예외가 많음</td><td>Agent + Escalation</td><td class="hi">높음</td></tr>
+    </table>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <section id="architecture">
+    <span class="eyebrow">Current System</span>
+    <h2 class="sec-title">현재 AI Workspace 아키텍처</h2>
+    <p class="lead">워크스페이스가 늘어나면서 각각의 규칙이 달라지고, 스킬이 분산되고, Claude와 Codex 간 인수인계가 필요해지고, 변경사항 전파와 상태 점검이 필요해졌습니다. 이 문제를 풀기 위해 상위 관리계층(ATLAS)을 구축해 워크스페이스 생성 자동화, 세션 인수인계 프로토콜, 크로스 워크스페이스 감사, 스킬 라이프사이클 관리를 표준화했습니다.</p>
+    <p class="lead">15개 이상의 Domain Workspace를 구축하고 업무별로 운영·실험하고 있으며, 완성도와 실사용 수준은 워크스페이스마다 다릅니다.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 760 430" role="img" aria-label="전체 아키텍처 다이어그램">
+        <!-- HUMAN -->
+        <rect x="290" y="10" width="180" height="46" rx="10" class="dnode-accent2"/>
+        <text x="380" y="30" text-anchor="middle" class="dtext" font-weight="700">HUMAN</text>
+        <text x="380" y="46" text-anchor="middle" class="dtext-soft">방향 · 판단 · 승인</text>
+
+        <!-- lines from human to 3 layers -->
+        <path d="M340,56 L150,96" class="dline-gov"/>
+        <path d="M380,56 L380,96" class="dline-exec"/>
+        <path d="M420,56 L610,96" class="dline-auto"/>
+
+        <!-- ATLAS -->
+        <rect x="60" y="98" width="180" height="60" rx="10" class="dnode-accent"/>
+        <text x="150" y="122" text-anchor="middle" class="dtext" font-weight="700">ATLAS</text>
+        <text x="150" y="138" text-anchor="middle" class="dtext-soft">Governance</text>
+        <text x="150" y="152" text-anchor="middle" class="dtext-soft">Standard · Audit</text>
+
+        <!-- Claude/Codex -->
+        <rect x="290" y="98" width="180" height="60" rx="10" class="dnode"/>
+        <text x="380" y="122" text-anchor="middle" class="dtext" font-weight="700">Claude / Codex</text>
+        <text x="380" y="138" text-anchor="middle" class="dtext-soft">Interactive</text>
+        <text x="380" y="152" text-anchor="middle" class="dtext-soft">AI Workers</text>
+
+        <!-- OpenClaw -->
+        <rect x="520" y="98" width="180" height="60" rx="10" class="dnode-accent3"/>
+        <text x="610" y="122" text-anchor="middle" class="dtext" font-weight="700">OpenClaw</text>
+        <text x="610" y="138" text-anchor="middle" class="dtext-soft">Autonomous</text>
+        <text x="610" y="152" text-anchor="middle" class="dtext-soft">AI Agents</text>
+
+        <!-- lines down to domain workspaces -->
+        <path d="M150,158 L150,190 L380,190" class="dline-gov"/>
+        <path d="M380,158 L380,210" class="dline-exec"/>
+        <path d="M610,158 L610,190 L380,190" class="dline-auto"/>
+        <path d="M380,190 L380,210" class="dline"/>
+
+        <!-- DOMAIN WORKSPACES label -->
+        <text x="380" y="204" text-anchor="middle" class="dtext-soft" style="font-size:10px; letter-spacing:.08em;">DOMAIN WORKSPACES</text>
+
+        <!-- workspace boxes -->
+        <g>
+          <rect x="60" y="216" width="120" height="42" rx="8" class="dnode"/>
+          <text x="120" y="242" text-anchor="middle" class="dtext">LEGAL</text>
+          <rect x="200" y="216" width="120" height="42" rx="8" class="dnode"/>
+          <text x="260" y="242" text-anchor="middle" class="dtext">VTR / PS</text>
+          <rect x="340" y="216" width="120" height="42" rx="8" class="dnode"/>
+          <text x="400" y="242" text-anchor="middle" class="dtext">DEV</text>
+          <rect x="480" y="216" width="120" height="42" rx="8" class="dnode"/>
+          <text x="540" y="242" text-anchor="middle" class="dtext">CONTENT</text>
+          <rect x="620" y="216" width="80" height="42" rx="8" class="dnode"/>
+          <text x="660" y="242" text-anchor="middle" class="dtext-soft">...</text>
+        </g>
+
+        <!-- down to shared resources -->
+        <path d="M120,258 L120,286 L380,286" class="dline"/>
+        <path d="M260,258 L260,286" class="dline"/>
+        <path d="M400,258 L400,286" class="dline"/>
+        <path d="M540,258 L540,286 L380,286" class="dline"/>
+        <path d="M660,258 L660,286 L380,286" class="dline"/>
+        <path d="M380,286 L380,300" class="dline"/>
+
+        <rect x="140" y="302" width="480" height="46" rx="10" class="dnode"/>
+        <text x="380" y="322" text-anchor="middle" class="dtext-soft">Skill · Data · API · Memory</text>
+        <text x="380" y="338" text-anchor="middle" class="dtext-soft">Document · Log · Knowledge</text>
+
+        <!-- cross cutting -->
+        <line x1="40" y1="372" x2="720" y2="372" class="dline" stroke-dasharray="2,4"/>
+        <text x="380" y="392" text-anchor="middle" class="dtext-soft" style="font-size:10.5px;">Cross-cutting: Human Approval · Checkpoint · Audit · Learning · Security · Change Management</text>
+      </svg>
+      <div class="legend">
+        <b>ATLAS</b> — Workspace 간 표준·감사·인수인계를 담당하는 Governance Layer&nbsp;&nbsp;·&nbsp;&nbsp;
+        <b>Claude Code / Codex</b> — 각 Workspace에서 대화형으로 작업하는 Interactive AI Layer&nbsp;&nbsp;·&nbsp;&nbsp;
+        <b>OpenClaw</b> — 정기·상시 업무를 수행하는 Autonomous Agent Runtime
+      </div>
+    </div>
+
+    <div class="proof-strip" style="margin-top:20px;">
+      <span class="proof-chip"><b>15개+</b> Domain Workspace</span>
+      <span class="proof-chip"><b>9개</b> Workspace Checkpoint 프로토콜 배포</span>
+      <span class="proof-chip"><b>17차+</b> ATLAS 연속 세션 운영</span>
     </div>
   </section>
 
-  <section id="projects">
-    <h2>Selected AI/AX Projects</h2>
+  <!-- CASE STUDIES -->
+  <section id="cases">
+    <span class="eyebrow">Case Studies</span>
+    <h2 class="sec-title">실제로는 어떻게 적용했나</h2>
+    <p class="lead" style="margin-bottom:28px;">15개 워크스페이스 전체를 나열하지 않고, 서로 성격이 다른 대표 사례 3개를 깊게 보여드립니다.</p>
 
-    <div class="project">
-      <h3>Multi-Agent 기반 AI Workspace 운영·거버넌스</h3>
-      <div class="meta">개인 AI/AX 시스템 구축 프로젝트 · ~ 현재</div>
-      <div class="stat-row">
-        <span class="stat">Workspace 15개+</span>
-        <span class="stat">배포·검증 9개 WS</span>
-        <span class="stat">AI Agent 3개</span>
-        <span class="stat">Cron Job 11개</span>
+    <!-- CASE A -->
+    <div class="case">
+      <h3>AX-ARCHITECT — 업무를 AX 관점에서 어떻게 진단하는가</h3>
+      <div class="case-sub">Diagnosis</div>
+
+      <div class="diagram" style="margin-top:0;">
+        <svg viewBox="0 0 700 70" role="img" aria-label="AX-ARCHITECT 6단계">
+          <g font-size="12">
+            <rect x="0" y="10" width="100" height="34" rx="8" class="dnode-accent"/><text x="50" y="31" text-anchor="middle" class="dtext">DEFINE</text>
+            <text x="112" y="31" class="dtext-soft">→</text>
+            <rect x="125" y="10" width="100" height="34" rx="8" class="dnode-accent"/><text x="175" y="31" text-anchor="middle" class="dtext">EVIDENCE</text>
+            <text x="237" y="31" class="dtext-soft">→</text>
+            <rect x="250" y="10" width="100" height="34" rx="8" class="dnode-accent"/><text x="300" y="31" text-anchor="middle" class="dtext">DIAGNOSE</text>
+            <text x="362" y="31" class="dtext-soft">→</text>
+            <rect x="375" y="10" width="100" height="34" rx="8" class="dnode-accent"/><text x="425" y="31" text-anchor="middle" class="dtext">DESIGN</text>
+            <text x="487" y="31" class="dtext-soft">→</text>
+            <rect x="500" y="10" width="100" height="34" rx="8" class="dnode-accent"/><text x="550" y="31" text-anchor="middle" class="dtext">EVALUATE</text>
+            <text x="612" y="31" class="dtext-soft">→</text>
+            <rect x="625" y="10" width="75" height="34" rx="8" class="dnode-accent"/><text x="662" y="31" text-anchor="middle" class="dtext">PROVE</text>
+          </g>
+          <text x="0" y="64" class="dtext-soft">위험등급 L1~L4에 따라 진단 깊이 자동 조절</text>
+        </svg>
       </div>
+
+      <dl class="case-steps">
+        <dt>문제</dt><dd>업무를 바로 수정하면 근거 없는 판단이 되기 쉽다.</dd>
+        <dt>설계</dt><dd>정의→근거→진단→설계→평가→증명 6단계, 위험등급별 자동 깊이조절. 타 워크스페이스는 직접 수정하지 않고 승인 후 해당 워크스페이스 AI를 실행시킴.</dd>
+        <dt>현재 구조</dt><dd>DEFINE→EVIDENCE→DIAGNOSE→DESIGN→EVALUATE→PROVE, Risk Level L1~L4.</dd>
+        <dt>적용</dt><dd>세무·명리·부동산·투자·에이전트 실험실 등 13개 사례에 실제 적용.</dd>
+        <dt>교훈</dt><dd>상시 자동화는 설계만으로 끝나지 않는다 — 독립 감사에서 실제 버그가 발견돼 수정 후 파일럿(수동 실행)으로 검증 중.</dd>
+        <dt>다음</dt><dd>상시 리서치 자동화의 자동 트리거 전환(현재는 의도적으로 보류).</dd>
+      </dl>
+      <div class="case-status">현재: <b>진단 Pipeline은 실사용 중</b>, 상시 리서치 자동화는 검증 단계</div>
+
+      <div class="evidence">
+        <div class="ev-label">AX-ARCHITECT / Diagnosis Reports (일부)</div>
+        <ul>
+          <li>2026-08 · TAX-WS 진단 리포트</li>
+          <li>2026-08 · 역학WS 진단 리포트</li>
+          <li>2026-08 · LAB-WS 진단 리포트</li>
+          <li>2026-08 · INVEST-WS 진단 리포트</li>
+          <li>2026-08 · FORGE-WS 진단 리포트</li>
+          <li>외 8건</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CASE B -->
+    <div class="case">
+      <h3>LEGAL-WS — 고위험 지식업무를 AI Workflow로 어떻게 구조화했는가</h3>
+      <div class="case-sub">High-stakes Knowledge Work Design</div>
+
+      <div class="diagram" style="margin-top:0;">
+        <svg viewBox="0 0 700 60" role="img" aria-label="LEGAL-WS 5단계">
+          <g font-size="11.5">
+            <rect x="0" y="8" width="118" height="34" rx="8" class="dnode-accent2"/><text x="59" y="29" text-anchor="middle" class="dtext">①자료 인덱스</text>
+            <text x="128" y="29" class="dtext-soft">→</text>
+            <rect x="140" y="8" width="140" height="34" rx="8" class="dnode-accent2"/><text x="210" y="29" text-anchor="middle" class="dtext">②순차완독+기록</text>
+            <text x="290" y="29" class="dtext-soft">→</text>
+            <rect x="302" y="8" width="120" height="34" rx="8" class="dnode-accent2"/><text x="362" y="29" text-anchor="middle" class="dtext">③논점·리스크</text>
+            <text x="432" y="29" class="dtext-soft">→</text>
+            <rect x="444" y="8" width="130" height="34" rx="8" class="dnode-accent2"/><text x="509" y="29" text-anchor="middle" class="dtext">④출처연결 초안</text>
+            <text x="584" y="29" class="dtext-soft">→</text>
+            <rect x="596" y="8" width="104" height="34" rx="8" class="dnode-accent2"/><text x="648" y="29" text-anchor="middle" class="dtext">⑤검토·버전관리</text>
+          </g>
+        </svg>
+      </div>
+
+      <dl class="case-steps">
+        <dt>문제</dt><dd>AI가 자료를 대충 읽고 결론부터 내리면 고위험 업무에서 치명적이다.</dd>
+        <dt>설계</dt><dd>자료 접수 → 전체 인덱스 구축 → 1개씩 순서대로 완독하며 즉시 기록(병렬 처리 절대 금지) → 부족한 자료 확인 → 논점·리스크 정리 → 주요 주장과 근거에 원자료 출처를 연결한 초안 작성 → 역추적 검증 → 사람 검토 → 버전 관리.</dd>
+        <dt>현재 구조</dt><dd>완독 전 다음 단계 진행 자체를 막는 강제 구조.</dd>
+        <dt>적용</dt><dd>복수 유형의 실제 사건 업무에 적용 중.</dd>
+        <dt>교훈</dt><dd>강점은 사건 개수가 아니라, 고위험 지식업무를 순서·근거·검증·승인으로 통제한 Workflow 자체.</dd>
+        <dt>다음</dt><dd>산출물 아카이브 구조 정비.</dd>
+      </dl>
+      <div class="case-status">현재: <b>실제 업무에 적용 중</b></div>
+    </div>
+
+    <!-- CASE C -->
+    <div class="case">
+      <h3>AI-native Product Development Workflow</h3>
+      <div class="case-sub">사업검증 → 제품기획·설계 → Multi-Agent 개발을 연결하는 End-to-End Workflow &nbsp;·&nbsp; VTR-WS × PS-WS × DEV-WS</div>
+
+      <div class="diagram" style="margin-top:0;">
+        <svg viewBox="0 0 700 130" role="img" aria-label="VTR PS DEV 흐름">
+          <rect x="10" y="30" width="190" height="66" rx="10" class="dnode-accent"/>
+          <text x="105" y="54" text-anchor="middle" class="dtext" font-weight="700">VTR</text>
+          <text x="105" y="70" text-anchor="middle" class="dtext-soft">만들 가치가 있는가</text>
+          <text x="105" y="84" text-anchor="middle" class="dtext-soft" style="font-size:10px;">Business Validation</text>
+
+          <rect x="255" y="30" width="190" height="66" rx="10" class="dnode-accent2"/>
+          <text x="350" y="54" text-anchor="middle" class="dtext" font-weight="700">PS</text>
+          <text x="350" y="70" text-anchor="middle" class="dtext-soft">무엇을 어떻게 만들 것인가</text>
+          <text x="350" y="84" text-anchor="middle" class="dtext-soft" style="font-size:10px;">Product / UX / Architecture</text>
+
+          <rect x="500" y="30" width="190" height="66" rx="10" class="dnode-accent3"/>
+          <text x="595" y="54" text-anchor="middle" class="dtext" font-weight="700">DEV</text>
+          <text x="595" y="70" text-anchor="middle" class="dtext-soft">어떻게 구현할 것인가</text>
+          <text x="595" y="84" text-anchor="middle" class="dtext-soft" style="font-size:10px;">Claude PM + 가변 Codex</text>
+
+          <path d="M200,54 L255,54" class="dline-exec" marker-end="url(#arrow)"/>
+          <text x="227" y="46" text-anchor="middle" class="dtext-soft" style="font-size:9.5px;">Handoff</text>
+          <path d="M255,74 L200,74" class="dline-gov" marker-end="url(#arrow)"/>
+          <text x="227" y="90" text-anchor="middle" class="dtext-soft" style="font-size:9.5px;">Feedback (실증)</text>
+
+          <path d="M445,54 L500,54" class="dline-exec" marker-end="url(#arrow)"/>
+          <text x="472" y="46" text-anchor="middle" class="dtext-soft" style="font-size:9.5px;">Handoff</text>
+          <path d="M500,74 L445,74" class="dline" stroke-dasharray="2,3" marker-end="url(#arrow)"/>
+          <text x="472" y="90" text-anchor="middle" class="dtext-soft" style="font-size:9.5px;">Feedback (설계중)</text>
+
+          <text x="105" y="115" text-anchor="middle" class="dtext-soft" style="font-size:10px;">독립 Context · Rule · Skill</text>
+          <text x="350" y="115" text-anchor="middle" class="dtext-soft" style="font-size:10px;">독립 Context · Rule · Skill</text>
+          <text x="595" y="115" text-anchor="middle" class="dtext-soft" style="font-size:10px;">독립 Context · Rule · Skill</text>
+
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="var(--ink-soft)"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+
+      <p class="lead" style="font-size:.92rem; margin:14px 0 4px;"><em>"더 빨리 코딩하기 위한 구조가 아니라, 잘못된 것을 빨리 만들지 않기 위한 구조."</em></p>
+
+      <dl class="case-steps" style="margin-top:16px;">
+        <dt>문제</dt><dd>개발부터 시작하면 사업성·제품설계가 뒤늦게 따라온다.</dd>
+        <dt>설계</dt><dd>Business / Product / Development Context를 각각 독립 워크스페이스로 분리. PS는 코딩 권한을 의도적으로 배제.</dd>
+        <dt>현재 구조</dt><dd>VTR(Go/No-Go) → PS(제품설계) → DEV. 병렬개발이 필요한 경우 Claude가 PM/설계 역할로 작업을 독립 모듈로 분해하고, 작업량에 따라 가변적인 Codex CLI Worker가 각 모듈 구현을 맡습니다. (작업이 1~2개 수준으로 단순할 때는 별도 병렬화 없이 Claude가 직접 처리합니다.)</dd>
+        <dt>적용</dt><dd>VTR↔PS 실제 왕복(점술앱 프로젝트, 결제 인프라 제약이 사업전략을 실제로 재검토시킴) / DEV 병렬협업 실험.</dd>
+        <dt>교훈</dt><dd>Handoff는 발신만으로 완료되지 않는다 — 수신·적용까지 확인해야 한다.</dd>
+        <dt>다음</dt><dd>수신·적용 검증 자동화 + DEV→PS Feedback 강화.</dd>
+      </dl>
+      <div class="case-status">현재: <b>VTR↔PS 흐름은 검증</b>, DEV 연계는 계속 고도화 중</div>
+
+      <div class="diagram">
+        <svg viewBox="0 0 700 150" role="img" aria-label="DEV 내부 구조">
+          <rect x="20" y="15" width="150" height="50" rx="10" class="dnode-accent3"/>
+          <text x="95" y="36" text-anchor="middle" class="dtext" font-weight="700">Claude</text>
+          <text x="95" y="52" text-anchor="middle" class="dtext-soft" style="font-size:10px;">PM · 모듈분해</text>
+
+          <path d="M170,40 L230,40" class="dline"/>
+          <path d="M170,40 L230,20" class="dline"/>
+          <path d="M170,40 L230,60" class="dline"/>
+          <path d="M170,40 L230,80" class="dline"/>
+
+          <rect x="230" y="8" width="110" height="28" rx="7" class="dnode"/><text x="285" y="26" text-anchor="middle" class="dtext-soft" style="font-size:10.5px;">Codex #1</text>
+          <rect x="230" y="42" width="110" height="28" rx="7" class="dnode"/><text x="285" y="60" text-anchor="middle" class="dtext-soft" style="font-size:10.5px;">Codex #2</text>
+          <rect x="230" y="76" width="110" height="28" rx="7" class="dnode"/><text x="285" y="94" text-anchor="middle" class="dtext-soft" style="font-size:10.5px;">Codex #N</text>
+          <text x="285" y="122" text-anchor="middle" class="dtext-faint" style="font-size:9.5px; fill:var(--ink-faint);">N = 작업량에 따라 가변</text>
+
+          <path d="M340,50 L400,50" class="dline" marker-end="url(#arrow)"/>
+          <rect x="400" y="20" width="150" height="60" rx="10" class="dnode-accent"/>
+          <text x="475" y="42" text-anchor="middle" class="dtext" font-weight="700" style="font-size:11.5px;">게이트 검증</text>
+          <text x="475" y="58" text-anchor="middle" class="dtext-soft" style="font-size:10px;">tsc · build · test</text>
+          <text x="475" y="72" text-anchor="middle" class="dtext-soft" style="font-size:10px;">→ Claude 통합</text>
+
+          <path d="M550,50 L595,50" class="dline" marker-end="url(#arrow)"/>
+          <rect x="595" y="10" width="95" height="80" rx="8" class="dnode"/>
+          <text x="642" y="30" text-anchor="middle" class="dtext-soft" style="font-size:9.5px;">code-reviewer</text>
+          <text x="642" y="46" text-anchor="middle" class="dtext-soft" style="font-size:9.5px;">qa-tester</text>
+          <text x="642" y="62" text-anchor="middle" class="dtext-soft" style="font-size:9.5px;">security-reviewer</text>
+          <text x="642" y="78" text-anchor="middle" class="dtext-soft" style="font-size:9.5px;">tech-researcher</text>
+        </svg>
+        <div class="legend">1~2개 작업 수준이면 병렬화 없이 Claude가 직접 처리. 정식 서브에이전트 4종은 지원·검증 역할.</div>
+      </div>
+
+      <div class="evidence">
+        <div class="ev-label">VTR / PS — Handoff · Feedback 파일 (점술앱 프로젝트, 일부)</div>
+        <ul>
+          <li>2026-08-05 · VTR → PS Handoff</li>
+          <li>2026-08-08 · PS → VTR Feedback</li>
+          <li>2026-08-17 · PS → VTR 재검토 요청</li>
+          <li>2026-08-17 · VTR → PS 재검토 결과</li>
+          <li>2026-08-17 · PS → DEV Handoff</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRINCIPLES -->
+  <section id="principles">
+    <span class="eyebrow">Lessons</span>
+    <h2 class="sec-title">실제 운영을 통해 얻은 설계원칙</h2>
+    <p class="lead" style="margin-bottom:20px;">완성 선언이 아니라, 실전에서 계속 쌓이는 원칙입니다.</p>
+
+    <div class="princ-grid">
+      <div class="princ-card"><span class="num">01</span><p><b>업무부터 분석한다</b> — Automation보다 Process/Task 분해가 먼저</p></div>
+      <div class="princ-card"><span class="num">02</span><p><b>AI가 필요한 일만 AI에게 준다</b> — Rule/Cron/Agent/Human 구분</p></div>
+      <div class="princ-card"><span class="num">03</span><p><b>Context를 분리한다</b> — 업무마다 Workspace/Agent 경계</p></div>
+      <div class="princ-card"><span class="num">04</span><p><b>생성과 검증을 분리한다</b> — AI가 만든 결과를 다른 기준으로 평가</p></div>
+      <div class="princ-card"><span class="num">05</span><p><b>Handoff는 적용 확인까지다</b> — 보냈다는 것과 작동한다는 것은 다름</p></div>
+      <div class="princ-card"><span class="num">06</span><p><b>실패를 시스템에 남긴다</b> — Error → Learning → Rule → Skill</p></div>
+    </div>
+
+    <details class="more-princ">
+      <summary>원칙 6개 더보기</summary>
       <ul>
-        <li>콘텐츠·투자·부동산·법률·세무·개발 등 전문업무를 독립 AI Workspace로 분리·운영</li>
-        <li>workspace-builder 구축 — 인터뷰만으로 폴더·문서·Skill 자동생성</li>
-        <li>Claude Code/Codex Checkpoint 기반 인수인계 구조 설계, 9개 Workspace에 실제 배포·검증</li>
-        <li>실사용 검증 중 PowerShell 예외처리 누락·인코딩 오류 2건 발견 → 재현 → 원인분석 → 수정 → 재검증</li>
-        <li>OpenClaw AI Agent 3개(기획·콘텐츠/투자분석/품질감사) 분리 운영, Slack/Telegram 자동보고</li>
+        <li>사람 판단은 제거가 아니라 중요한 결정에 집중시키는 것</li>
+        <li>"AI가 제안했다" ≠ "실제 적용됐다"</li>
+        <li>반복지식은 Prompt보다 Rule·Skill·SOP로 축적</li>
+        <li>외부·고위험 Agent는 최소권한과 Human Approval</li>
+        <li>구축 후 Audit·변경관리 필요</li>
+        <li>AX는 시간절감뿐 아니라 새로운 업무·Insight 가능성도 본다</li>
       </ul>
-    </div>
+    </details>
 
-    <div class="project">
-      <h3>automation-pipeline-design</h3>
-      <div class="meta">자동화 설계 방법론 자체 개발</div>
-      <div class="stat-row">
-        <span class="stat">실전 적용 3건</span>
-        <span class="stat">3역할 품질 Gate</span>
-      </div>
-      <ul>
-        <li>현업 인터뷰 → 업무정의 → Task 분해 → 자동화 가능성 판단 → AI/Tool 연결 → Dry Run → 품질검증 → 사람 승인 → 실행</li>
-        <li>Orchestrator + Sub-Agent 역할 분리, Planner/Generator/Evaluator 3역할 품질 Gate 내장</li>
-        <li>실제 3개 프로젝트에 재사용: YouTube 경쟁분석 자동화 · GPTers 커뮤니티 정보수집 자동화 · workspace-builder 자체 설계</li>
-      </ul>
-    </div>
-
-    <div class="project">
-      <h3>YouTube Data API 기반 시장·경쟁분석 자동화</h3>
-      <div class="meta">데이터 수집·분석 자동화 파이프라인</div>
-      <div class="stat-row">
-        <span class="stat">채널 155개</span>
-        <span class="stat">9단계 파이프라인</span>
-        <span class="stat">실행로그 3,234줄</span>
-      </div>
-      <ul>
-        <li>국내 경쟁채널 155개 수집·분석 — 리서치→채널분석→영상수집→자막추출→패턴분석→아이디어도출→대본생성→리포트→운영반영</li>
-        <li>실제 API 호출·데이터 처리로 실행 로그 3,234줄 확보 — 실제 가동된 프로젝트</li>
-        <li>결과를 실제 채널 운영 의사결정에 반영</li>
-      </ul>
+    <div class="diagram">
+      <svg viewBox="0 0 620 220" role="img" aria-label="AX Learning Loop">
+        <g font-size="10.5">
+          <circle cx="310" cy="110" r="95" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="3,4"/>
+          <rect x="255" y="6" width="110" height="30" rx="7" class="dnode-accent"/><text x="310" y="26" text-anchor="middle" class="dtext" style="font-size:10.5px;">실제 업무</text>
+          <rect x="420" y="46" width="120" height="30" rx="7" class="dnode-accent"/><text x="480" y="66" text-anchor="middle" class="dtext" style="font-size:10.5px;">Workspace 적용</text>
+          <rect x="460" y="140" width="120" height="30" rx="7" class="dnode-accent"/><text x="520" y="160" text-anchor="middle" class="dtext" style="font-size:10.5px;">실행/관찰</text>
+          <rect x="360" y="192" width="120" height="30" rx="7" class="dnode-accent"/><text x="420" y="212" text-anchor="middle" class="dtext" style="font-size:10.5px;">문제 발견</text>
+          <rect x="140" y="192" width="120" height="30" rx="7" class="dnode-accent"/><text x="200" y="212" text-anchor="middle" class="dtext" style="font-size:10.5px;">원인 분석</text>
+          <rect x="20" y="140" width="150" height="30" rx="7" class="dnode-accent"/><text x="95" y="160" text-anchor="middle" class="dtext" style="font-size:10px;">경험+벤치마크</text>
+          <rect x="10" y="46" width="150" height="30" rx="7" class="dnode-accent"/><text x="85" y="66" text-anchor="middle" class="dtext" style="font-size:9.5px;">Rule/Skill 개선</text>
+          <path d="M 310,90 A 95,95 0 1 1 309,90" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" marker-end="url(#arrow)"/>
+        </g>
+      </svg>
+      <div class="legend">실제 업무 → 적용 → 실행/관찰 → 문제 발견 → 원인 분석 → 경험+벤치마크 종합 → Rule/Skill/Architecture 개선 → 재적용 → 표준화 (순환)</div>
     </div>
   </section>
 
-  <section id="skills">
-    <h2>Skills</h2>
-    <div class="skills-group">
-      <div class="skills-label">AI / AX</div>
-      <div class="chip-row">
-        <span class="chip">Claude Code</span><span class="chip">Codex</span><span class="chip">ChatGPT</span>
-        <span class="chip">OpenClaw</span><span class="chip">AI Agent</span><span class="chip">Multi-Agent Workflow</span>
-        <span class="chip">Human-in-the-loop</span><span class="chip">AI Workspace</span><span class="chip">Workflow Automation</span>
+  <!-- ROADMAP -->
+  <section id="roadmap">
+    <span class="eyebrow">Evolution</span>
+    <h2 class="sec-title">앞으로의 발전방향</h2>
+    <div class="road-grid">
+      <div class="road-card">
+        <h4>Collaboration</h4>
+        <ul><li>PS↔DEV Feedback 강화</li><li>Handoff 적용검증 자동화</li><li>Cross-Workspace Workflow 실험</li></ul>
       </div>
-    </div>
-    <div class="skills-group">
-      <div class="skills-label">System / Operation</div>
-      <div class="chip-row">
-        <span class="chip">Docker</span><span class="chip">Cron Job</span><span class="chip">Slack</span>
-        <span class="chip">Telegram</span><span class="chip">YouTube Data API</span><span class="chip">Obsidian</span>
+      <div class="road-card">
+        <h4>Reliability &amp; Governance</h4>
+        <ul><li>Agent 권한·보안 강화</li><li>평가/추적(Trace) 체계</li><li>Memory/Skill 라이프사이클</li><li>Human Approval 정교화</li></ul>
       </div>
-    </div>
-    <div class="skills-group">
-      <div class="skills-label">Legacy Development</div>
-      <div class="chip-row">
-        <span class="chip">Java</span><span class="chip">JSP</span><span class="chip">ASP</span><span class="chip">PHP</span>
-        <span class="chip">Oracle</span><span class="chip">MS-SQL</span><span class="chip">MySQL</span>
-        <span class="chip">Unix</span><span class="chip">Windows</span>
+      <div class="road-card">
+        <h4>Measurement &amp; Expansion</h4>
+        <ul><li>정량 성과 측정 체계 도입</li><li>도메인 확대</li><li>기업 적용 가능한 AX Reference Model로 발전</li></ul>
       </div>
     </div>
   </section>
 
-  <section id="career">
-    <h2>과거 Career</h2>
+  <!-- CONTRIBUTION -->
+  <section id="contribution">
+    <span class="eyebrow">Contribution</span>
+    <h2 class="sec-title">제가 기여할 수 있는 영역</h2>
+    <div class="contrib-list">
+      <div class="contrib-item"><span class="k">업무 프로세스 AX 진단</span><span class="v">반복·판단·고위험 Task를 구분하고 AI 적용지점을 설계</span></div>
+      <div class="contrib-item"><span class="k">AI Agent / Workflow 설계</span><span class="v">Agent·Skill·API·Data·Human Approval 구조화</span></div>
+      <div class="contrib-item"><span class="k">AI 업무자동화 PoC</span><span class="v">실제 업무 하나를 선정해 작은 범위에서 구현·검증</span></div>
+      <div class="contrib-item"><span class="k">AI-native 개발 Workflow</span><span class="v">사업기획·제품설계·AI Coding 사이의 Handoff·협업체계 설계</span></div>
+      <div class="contrib-item"><span class="k">AI 운영체계·거버넌스</span><span class="v">Workspace 분리, 인수인계, 평가, 변경관리 구조 설계</span></div>
+    </div>
+    <p class="contrib-note">기업에 이미 모든 걸 구축해본 경험이 아니라, 개인 프로젝트에서 쌓은 위 경험을 기업 맥락의 역할로 옮겨 적용할 수 있다는 의미입니다.</p>
 
-    <div class="career-item">
-      <div class="career-head"><span>㈜펄소프트 · 대표이사</span><span class="career-period">2019.02 – 2025.12</span></div>
-      <div class="career-detail">SI/SM·솔루션 유통 사업운영, 온라인 유통·이커머스 사업기획, 고객사·거래처 관리 및 영업, 공공·금융·대기업 대상 SI/SM 프로젝트 사업 수행</div>
+    <div class="proof-strip" style="margin-top:24px;">
+      <span class="proof-chip">OpenClaw AI Agent <b>3개</b> 상시운영</span>
+      <span class="proof-chip">Cron Job <b>11개</b></span>
+      <span class="proof-chip">Slack/Telegram 자동보고</span>
+      <span class="proof-chip">YouTube Data API <b>155개</b> 채널 분석</span>
+      <span class="proof-chip"><b>9단계</b> 분석 Workflow</span>
+      <span class="proof-chip">실행로그 <b>3,234줄</b></span>
     </div>
-    <div class="career-item">
-      <div class="career-head"><span>㈜펄소프트 · 대표이사</span><span class="career-period">2014.11 – 2018.03</span></div>
-      <div class="career-detail">유통·물류분야 SI/SM 사업 운영(지오영그룹 차세대프로젝트 등), 거래처 개척 및 프로젝트 관리</div>
-    </div>
-    <div class="career-item">
-      <div class="career-head"><span>프리랜서 개발자 (과장~차장)</span><span class="career-period">2011.11 – 2014.05</span></div>
-      <div class="career-detail">보건복지부·산업은행·한전KDN 프로젝트 개발 참여</div>
-    </div>
-    <div class="career-item">
-      <div class="career-head"><span>㈜피디스타 · 대표이사</span><span class="career-period">2006.09 – 2011.09</span></div>
-      <div class="career-detail">ITO·SI/SM 사업 운영, 삼성·LG 관계사 프로젝트 수행 및 SI Outsourcing 인력 30~50명 운영. 영업·제안·고객관리·조직운영.</div>
-    </div>
-    <div class="career-item">
-      <div class="career-head"><span>웹개발자 / 프리랜서</span><span class="career-period">2001.06 – 2006.08</span></div>
-      <div class="career-detail">Java·ASP·PHP 기반 기업·공공·중견기업 웹/SI 프로젝트 수행 (아인텍정보기술·두원서미트·툴앤톨스·피디스타 SI사업부 등)</div>
-    </div>
-  </section>
-
-  <section id="education">
-    <h2>Education</h2>
-    <div class="edu-item"><b>금천고등학교</b> (이과) 졸업 — 1992.03 – 1995.02</div>
-    <div class="edu-item"><b>단국대학교</b> 전자공학과 수료 — 1996.03 – 2000.08</div>
-    <div class="edu-item"><b>한국방송통신대학교</b>(편입) 경제학과 졸업 — 2005.02 – 2023.02</div>
-    <div class="edu-item"><b>원광디지털대학교</b>(편입) 얼굴경영학과 휴학중 — 2023.03 –</div>
-    <div class="edu-item"><b>경희사이버대학교</b>(편입) 자산관리학부 휴학중 — 2023.09 –</div>
-  </section>
-
-  <section id="etc">
-    <h2>기타 활동</h2>
-    <div class="edu-item">AI 학습 커뮤니티(GPTers 등) 스터디 운영 및 학습반장 경험</div>
-    <div class="edu-item">YouTube 콘텐츠 기획·제작·운영 경험</div>
-    <div class="edu-item">AI/AX 프로젝트 및 업무자동화 사례 지속 학습·문서화</div>
   </section>
 
 </main>

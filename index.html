@@ -59,6 +59,23 @@
   }
   .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
   a{color:var(--accent);}
+  .nowrap-safe{overflow-wrap:anywhere; word-break:break-word;}
+  p.lead, dd, .legend, .contrib-item .v{overflow-wrap:anywhere;}
+
+  /* HOW 10단계 — 칩 형태(줄바꿈 자연스럽게 됨, SVG 대신 사용) */
+  .flow-chips{display:flex; flex-wrap:wrap; align-items:center; gap:8px 4px; margin-top:20px;}
+  .fc-step{
+    background:var(--accent-soft); color:var(--accent); font-weight:700; font-size:.8rem;
+    padding:6px 13px; border-radius:999px; white-space:nowrap;
+  }
+  .fc-arrow{color:var(--ink-faint); font-size:.82rem;}
+
+  /* 다이어그램 가로스크롤 안내 */
+  .scroll-hint{
+    display:none; font-size:.72rem; color:var(--ink-faint); text-align:right;
+    margin:-18px 0 8px; padding-right:2px;
+  }
+  @media (max-width:759px){ .scroll-hint{display:block;} }
 
   /* Career Background */
   .career-bg{padding:28px 0 40px; border-bottom:1px solid var(--line);}
@@ -282,35 +299,20 @@
     <p class="lead">완성된 독점 방법론은 아닙니다. 실제 운영 경험과 다양한 AX 사례연구를 통해, 현재 다음과 같은 실무적 접근으로 구조화해서 쓰고 있습니다.</p>
     <p class="lead" style="margin-top:10px;"><b>도구를 먼저 선택하지 않고, 업무 특성과 제약조건을 먼저 정의합니다.</b></p>
 
-    <div class="diagram">
-      <svg viewBox="0 0 900 90" role="img" aria-label="Understand to Standardize 10단계 흐름" width="900" height="90">
-        <text x="10" y="20" class="dtext-accent">UNDERSTAND</text>
-        <text x="10" y="36" class="dtext-soft">현재 업무 이해</text>
-        <text x="100" y="52" class="dtext-soft">→</text>
-        <text x="120" y="20" class="dtext-accent">EVIDENCE</text>
-        <text x="120" y="36" class="dtext-soft">문서·로그 확인</text>
-        <text x="205" y="52" class="dtext-soft">→</text>
-        <text x="225" y="20" class="dtext-accent">DECOMPOSE</text>
-        <text x="225" y="36" class="dtext-soft">Task 분해</text>
-        <text x="320" y="52" class="dtext-soft">→</text>
-        <text x="340" y="20" class="dtext-accent">DECIDE</text>
-        <text x="340" y="36" class="dtext-soft">역할 구분</text>
-        <text x="415" y="52" class="dtext-soft">→</text>
-        <text x="435" y="20" class="dtext-accent">DESIGN</text>
-        <text x="435" y="36" class="dtext-soft">구조 설계</text>
-        <text x="510" y="52" class="dtext-soft">→</text>
-        <text x="530" y="20" class="dtext-accent">PILOT</text>
-        <text x="530" y="36" class="dtext-soft">작은 범위 실행</text>
-        <text x="10" y="80" class="dtext-accent">EVALUATE</text>
-        <text x="10" y="96" class="dtext-soft" transform="translate(0,-14)"></text>
-        <text x="100" y="80" class="dtext-soft" transform="translate(0,-14)">→</text>
-      </svg>
-      <div style="font-size:.86rem; color:var(--ink-soft); text-align:center; margin-top:6px;">
-        UNDERSTAND → EVIDENCE → DECOMPOSE → DECIDE → DESIGN → PILOT → EVALUATE → APPROVE → LEARN → STANDARDIZE
-      </div>
+    <div class="flow-chips" role="img" aria-label="UNDERSTAND부터 STANDARDIZE까지 10단계 흐름">
+      <span class="fc-step">UNDERSTAND</span><span class="fc-arrow">→</span>
+      <span class="fc-step">EVIDENCE</span><span class="fc-arrow">→</span>
+      <span class="fc-step">DECOMPOSE</span><span class="fc-arrow">→</span>
+      <span class="fc-step">DECIDE</span><span class="fc-arrow">→</span>
+      <span class="fc-step">DESIGN</span><span class="fc-arrow">→</span>
+      <span class="fc-step">PILOT</span><span class="fc-arrow">→</span>
+      <span class="fc-step">EVALUATE</span><span class="fc-arrow">→</span>
+      <span class="fc-step">APPROVE</span><span class="fc-arrow">→</span>
+      <span class="fc-step">LEARN</span><span class="fc-arrow">→</span>
+      <span class="fc-step">STANDARDIZE</span>
     </div>
 
-    <p class="lead" style="margin-top:18px;">이 접근을 실제 워크스페이스로 구현한 대표 사례가 AX-ARCHITECT의 6단계 진단 방법론(DEFINE→EVIDENCE→DIAGNOSE→DESIGN→EVALUATE→PROVE)이며, 지금까지 13개 사례에 실제 적용했습니다.</p>
+    <p class="lead" style="margin-top:18px;">이 접근을 실제 워크스페이스로 구현한 대표 사례가 AX-ARCHITECT의 6단계 진단 방법론(<span class="nowrap-safe">DEFINE→EVIDENCE→DIAGNOSE→DESIGN→EVALUATE→PROVE</span>)이며, 지금까지 13개 사례에 실제 적용했습니다.</p>
 
     <h3 style="font-size:1rem; margin:32px 0 4px;">Automation Decision Matrix</h3>
     <p class="lead" style="font-size:.92rem;">실제 업무는 한 가지 기준으로만 나뉘지 않기 때문에, 아래 기준으로 접근 방식과 사람 개입 정도를 함께 판단합니다.</p>
@@ -339,6 +341,7 @@
     <p class="lead">15개 이상의 Domain Workspace를 구축하고 업무별로 운영·실험하고 있으며, 완성도와 실사용 수준은 워크스페이스마다 다릅니다.</p>
 
     <div class="diagram">
+        <div class="scroll-hint">← 옆으로 스크롤해서 전체 보기 →</div>
       <svg viewBox="0 0 760 430" role="img" aria-label="전체 아키텍처 다이어그램" width="760" height="430">
         <!-- HUMAN -->
         <rect x="290" y="10" width="180" height="46" rx="10" class="dnode-accent2"/>
@@ -442,6 +445,7 @@
       <div class="case-sub">Diagnosis</div>
 
       <div class="diagram" style="margin-top:0;">
+        <div class="scroll-hint">← 옆으로 스크롤해서 전체 보기 →</div>
         <svg viewBox="0 0 700 70" role="img" aria-label="AX-ARCHITECT 6단계" width="700" height="70">
           <g font-size="12">
             <rect x="0" y="10" width="100" height="34" rx="8" class="dnode-accent"/><text x="50" y="31" text-anchor="middle" class="dtext">DEFINE</text>
@@ -489,6 +493,7 @@
       <div class="case-sub">High-stakes Knowledge Work Design</div>
 
       <div class="diagram" style="margin-top:0;">
+        <div class="scroll-hint">← 옆으로 스크롤해서 전체 보기 →</div>
         <svg viewBox="0 0 700 60" role="img" aria-label="LEGAL-WS 5단계" width="700" height="60">
           <g font-size="11.5">
             <rect x="0" y="8" width="118" height="34" rx="8" class="dnode-accent2"/><text x="59" y="29" text-anchor="middle" class="dtext">①자료 인덱스</text>
@@ -521,6 +526,7 @@
       <div class="case-sub">사업검증 → 제품기획·설계 → Multi-Agent 개발을 연결하는 End-to-End Workflow &nbsp;·&nbsp; VTR-WS × PS-WS × DEV-WS</div>
 
       <div class="diagram" style="margin-top:0;">
+        <div class="scroll-hint">← 옆으로 스크롤해서 전체 보기 →</div>
         <svg viewBox="0 0 700 130" role="img" aria-label="VTR PS DEV 흐름" width="700" height="130">
           <rect x="10" y="30" width="190" height="66" rx="10" class="dnode-accent2"/>
           <text x="105" y="54" text-anchor="middle" class="dtext" font-weight="700">VTR</text>
@@ -572,6 +578,7 @@
       <div class="case-status"><span class="tag">현재</span><b>VTR↔PS 흐름은 검증</b>, DEV 연계는 계속 고도화 중</div>
 
       <div class="diagram">
+        <div class="scroll-hint">← 옆으로 스크롤해서 전체 보기 →</div>
         <svg viewBox="0 0 700 150" role="img" aria-label="DEV 내부 구조" width="700" height="150">
           <rect x="20" y="15" width="150" height="50" rx="10" class="dnode-accent3"/>
           <text x="95" y="36" text-anchor="middle" class="dtext" font-weight="700">Claude</text>
@@ -646,6 +653,7 @@
     </details>
 
     <div class="diagram">
+        <div class="scroll-hint">← 옆으로 스크롤해서 전체 보기 →</div>
       <svg viewBox="0 0 620 220" role="img" aria-label="AX Learning Loop" width="620" height="220">
         <g font-size="10.5">
           <circle cx="310" cy="110" r="95" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="3,4"/>

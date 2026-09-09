@@ -140,12 +140,27 @@
   .case:last-child{margin-bottom:0;}
   .case h3{font-size:1.15rem; margin:0 0 4px;}
   .case .case-sub{font-size:.86rem; color:var(--ink-faint); margin-bottom:18px;}
-  .case-steps{display:grid; grid-template-columns:auto 1fr; gap:6px 14px; font-size:.9rem;}
-  .case-steps dt{color:var(--accent); font-weight:700; white-space:nowrap; padding-top:1px;}
+  .case-steps{display:grid; grid-template-columns:auto 1fr; gap:8px 14px; font-size:.9rem;}
+  .case-steps dt{
+    display:inline-block; font-weight:700; font-size:.76rem; white-space:nowrap;
+    padding:3px 11px; border-radius:999px; height:fit-content; margin-top:1px;
+  }
   .case-steps dd{margin:0; color:var(--ink-soft); padding-bottom:10px;}
+  .dt-problem{background:var(--accent2-soft); color:var(--accent2);}
+  .dt-design{background:var(--accent-soft); color:var(--accent);}
+  .dt-structure{background:var(--accent-soft); color:var(--accent);}
+  .dt-applied{background:var(--accent3-soft); color:var(--accent3);}
+  .dt-lesson{background:var(--accent2-soft); color:var(--accent2);}
+  .dt-next{background:var(--future-soft); color:var(--future);}
+  .kw{background:var(--accent2-soft); color:var(--accent2); padding:1px 7px; border-radius:6px; font-weight:700;}
+  .kw-ai{background:var(--accent3-soft); color:var(--accent3); padding:1px 7px; border-radius:6px; font-weight:700;}
   .case-status{
     margin-top:16px; padding-top:14px; border-top:1px dashed var(--line);
     font-size:.86rem; color:var(--ink-soft);
+  }
+  .case-status .tag{
+    display:inline-block; background:var(--future-soft); color:var(--future);
+    font-weight:700; font-size:.76rem; padding:2px 10px; border-radius:999px; margin-right:6px;
   }
   .case-status b{color:var(--ink);}
 
@@ -429,14 +444,14 @@
       </div>
 
       <dl class="case-steps">
-        <dt>문제</dt><dd>업무를 바로 수정하면 근거 없는 판단이 되기 쉽다.</dd>
-        <dt>설계</dt><dd>정의→근거→진단→설계→평가→증명 6단계, 위험등급별 자동 깊이조절. DESIGN 단계는 Workflow 재설계와 Tool-neutral Solution Design을 함께 다룹니다 — AI Workspace나 Agent 방식을 미리 정답으로 가정하지 않고, 업무 특성·데이터·보안·비용·운영조건을 고려해 SaaS·API·RPA·AI Agent·Custom Development 등 가능한 방식을 비교하고 필요한 조합을 설계하는 것을 원칙으로 삼습니다. 타 워크스페이스는 직접 수정하지 않고 승인 후 해당 워크스페이스 AI를 실행시킴.</dd>
-        <dt>현재 구조</dt><dd>DEFINE→EVIDENCE→DIAGNOSE→DESIGN(Workflow 재설계+도구중립 비교)→EVALUATE→PROVE, Risk Level L1~L4.</dd>
-        <dt>적용</dt><dd>Workspace·프로젝트 대상 13개 진단 사례 적용(세무·명리·부동산·투자·에이전트 실험실 등).</dd>
-        <dt>교훈</dt><dd>상시 자동화는 설계만으로 끝나지 않는다 — 독립 감사에서 실제 버그가 발견돼 수정 후 파일럿(수동 실행)으로 검증 중.</dd>
-        <dt>다음</dt><dd>시장 AI/자동화 기술지형과 실제 적용사례를 지속적으로 축적해 도구중립 비교 기준을 고도화하고 있습니다. 상시 리서치 자동화의 자동 트리거 전환도 현재는 의도적으로 보류 중입니다.</dd>
+        <dt class="dt-problem">문제</dt><dd>업무를 바로 수정하면 근거 없는 판단이 되기 쉽다.</dd>
+        <dt class="dt-design">설계</dt><dd>정의→근거→진단→설계→평가→증명 6단계, 위험등급별 자동 깊이조절. DESIGN 단계는 Workflow 재설계와 Tool-neutral Solution Design을 함께 다룹니다 — AI Workspace나 Agent 방식을 미리 정답으로 가정하지 않고, 업무 특성·데이터·보안·비용·운영조건을 고려해 SaaS·API·RPA·AI Agent·Custom Development 등 가능한 방식을 비교하고 필요한 조합을 설계하는 것을 원칙으로 삼습니다. 타 워크스페이스는 직접 수정하지 않고 승인 후 해당 워크스페이스 AI를 실행시킴.</dd>
+        <dt class="dt-structure">현재 구조</dt><dd>DEFINE→EVIDENCE→DIAGNOSE→DESIGN(Workflow 재설계+도구중립 비교)→EVALUATE→PROVE, Risk Level L1~L4.</dd>
+        <dt class="dt-applied">적용</dt><dd>Workspace·프로젝트 대상 <span class="kw-ai">13개 진단 사례</span> 적용(세무·명리·부동산·투자·에이전트 실험실 등).</dd>
+        <dt class="dt-lesson">교훈</dt><dd>상시 자동화는 설계만으로 끝나지 않는다 — 독립 감사에서 실제 버그가 발견돼 수정 후 파일럿(수동 실행)으로 검증 중.</dd>
+        <dt class="dt-next">다음</dt><dd>시장 AI/자동화 기술지형과 실제 적용사례를 지속적으로 축적해 도구중립 비교 기준을 고도화하고 있습니다. 상시 리서치 자동화의 자동 트리거 전환도 현재는 의도적으로 보류 중입니다.</dd>
       </dl>
-      <div class="case-status">현재: <b>진단 Pipeline은 실사용 중</b>, 상시 리서치 자동화는 검증 단계</div>
+      <div class="case-status"><span class="tag">현재</span><b>진단 Pipeline은 실사용 중</b>, 상시 리서치 자동화는 검증 단계</div>
 
       <div class="evidence">
         <div class="ev-label">AX-ARCHITECT / Diagnosis Reports (일부)</div>
@@ -473,14 +488,14 @@
       </div>
 
       <dl class="case-steps">
-        <dt>문제</dt><dd>AI가 자료를 대충 읽고 결론부터 내리면 고위험 업무에서 치명적이다.</dd>
-        <dt>설계</dt><dd>자료 접수 → 전체 인덱스 구축 → 1개씩 순서대로 완독하며 즉시 기록(병렬 처리 절대 금지) → 부족한 자료 확인 → 논점·리스크 정리 → 주요 주장과 근거에 원자료 출처를 연결한 초안 작성 → 역추적 검증 → 사람 검토 → 버전 관리.</dd>
-        <dt>현재 구조</dt><dd>완독 전 다음 단계 진행 자체를 막는 강제 구조.</dd>
-        <dt>적용</dt><dd>복수 유형의 실제 사건 업무에 적용 중.</dd>
-        <dt>교훈</dt><dd>강점은 사건 개수가 아니라, 고위험 지식업무를 순서·근거·검증·승인으로 통제한 Workflow 자체.</dd>
-        <dt>다음</dt><dd>산출물 아카이브 구조 정비.</dd>
+        <dt class="dt-problem">문제</dt><dd>AI가 자료를 대충 읽고 결론부터 내리면 고위험 업무에서 치명적이다.</dd>
+        <dt class="dt-design">설계</dt><dd>자료 접수 → 전체 인덱스 구축 → 1개씩 순서대로 완독하며 즉시 기록(<span class="kw">병렬 처리 절대 금지</span>) → 부족한 자료 확인 → 논점·리스크 정리 → 주요 주장과 근거에 원자료 출처를 연결한 초안 작성 → 역추적 검증 → 사람 검토 → 버전 관리.</dd>
+        <dt class="dt-structure">현재 구조</dt><dd>완독 전 다음 단계 진행 자체를 막는 강제 구조.</dd>
+        <dt class="dt-applied">적용</dt><dd>복수 유형의 실제 사건 업무에 적용 중.</dd>
+        <dt class="dt-lesson">교훈</dt><dd>강점은 사건 개수가 아니라, 고위험 지식업무를 순서·근거·검증·승인으로 통제한 Workflow 자체.</dd>
+        <dt class="dt-next">다음</dt><dd>산출물 아카이브 구조 정비.</dd>
       </dl>
-      <div class="case-status">현재: <b>실제 업무에 적용 중</b></div>
+      <div class="case-status"><span class="tag">현재</span><b>실제 업무에 적용 중</b></div>
     </div>
 
     <!-- CASE C -->
@@ -530,14 +545,14 @@
       <p class="lead" style="font-size:.92rem; margin:14px 0 4px;"><em>"더 빨리 코딩하기 위한 구조가 아니라, 잘못된 것을 빨리 만들지 않기 위한 구조."</em></p>
 
       <dl class="case-steps" style="margin-top:16px;">
-        <dt>문제</dt><dd>개발부터 시작하면 사업성·제품설계가 뒤늦게 따라온다.</dd>
-        <dt>설계</dt><dd>Business / Product / Development Context를 각각 독립 워크스페이스로 분리. PS는 코딩 권한을 의도적으로 배제.</dd>
-        <dt>현재 구조</dt><dd>VTR(Go/No-Go) → PS(제품설계) → DEV. 병렬개발이 필요한 경우 Claude가 PM/설계 역할로 작업을 독립 모듈로 분해하고, 작업량에 따라 가변적인 Codex CLI Worker가 각 모듈 구현을 맡습니다. (작업이 1~2개 수준으로 단순할 때는 별도 병렬화 없이 Claude가 직접 처리합니다.)</dd>
-        <dt>적용</dt><dd>VTR↔PS 실제 왕복(점술앱 프로젝트, 결제 인프라 제약이 사업전략을 실제로 재검토시킴) / DEV 병렬협업 실험.</dd>
-        <dt>교훈</dt><dd>Handoff는 발신만으로 완료되지 않는다 — 수신·적용까지 확인해야 한다.</dd>
-        <dt>다음</dt><dd>수신·적용 검증 자동화 + DEV→PS Feedback 강화.</dd>
+        <dt class="dt-problem">문제</dt><dd>개발부터 시작하면 사업성·제품설계가 뒤늦게 따라온다.</dd>
+        <dt class="dt-design">설계</dt><dd>Business / Product / Development Context를 각각 독립 워크스페이스로 분리. PS는 코딩 권한을 의도적으로 배제.</dd>
+        <dt class="dt-structure">현재 구조</dt><dd>VTR(Go/No-Go) → PS(제품설계) → DEV. 병렬개발이 필요한 경우 Claude가 PM/설계 역할로 작업을 독립 모듈로 분해하고, 작업량에 따라 가변적인 Codex CLI Worker가 각 모듈 구현을 맡습니다. (작업이 1~2개 수준으로 단순할 때는 별도 병렬화 없이 Claude가 직접 처리합니다.)</dd>
+        <dt class="dt-applied">적용</dt><dd>VTR↔PS 실제 왕복(점술앱 프로젝트, <span class="kw">결제 인프라 제약이 사업전략을 실제로 재검토시킴</span>) / DEV 병렬협업 실험.</dd>
+        <dt class="dt-lesson">교훈</dt><dd>Handoff는 발신만으로 완료되지 않는다 — 수신·적용까지 확인해야 한다.</dd>
+        <dt class="dt-next">다음</dt><dd>수신·적용 검증 자동화 + DEV→PS Feedback 강화.</dd>
       </dl>
-      <div class="case-status">현재: <b>VTR↔PS 흐름은 검증</b>, DEV 연계는 계속 고도화 중</div>
+      <div class="case-status"><span class="tag">현재</span><b>VTR↔PS 흐름은 검증</b>, DEV 연계는 계속 고도화 중</div>
 
       <div class="diagram">
         <svg viewBox="0 0 700 150" role="img" aria-label="DEV 내부 구조">

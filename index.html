@@ -19,10 +19,16 @@
     --accent2-soft: #fbeee4;
     --accent3: #1f8a5f;
     --accent3-soft: #e6f5ee;
+    --gov: #1e3a5f;
+    --gov-soft: #e8edf3;
+    --future: #71717a;
+    --future-soft: #f0f0f1;
     --chip-bg: #f4f4f5;
     --radius: 14px;
     --maxw: 900px;
   }
+  /* 색상 의미체계: Navy(--gov)=Governance, Blue(--accent)=System/Tool/Workflow,
+     Teal(--accent3)=AI/Agent, Amber(--accent2)=Human Decision/Approval/Risk, Gray(--future)=구축·고도화 중 */
   @media (prefers-color-scheme: dark){
     :root{
       --bg: #131316;
@@ -37,6 +43,10 @@
       --accent2-soft: #3a2a1e;
       --accent3: #6fd1a6;
       --accent3-soft: #143229;
+      --gov: #9fb4d4;
+      --gov-soft: #202c3d;
+      --future: #9a9aa2;
+      --future-soft: #232327;
       --chip-bg: #201f24;
     }
   }
@@ -48,6 +58,24 @@
   }
   .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
   a{color:var(--accent);}
+
+  /* Career Background */
+  .career-bg{padding:28px 0 40px; border-bottom:1px solid var(--line);}
+  .career-bg p.lead{font-size:.96rem;}
+  .career-timeline{
+    display:flex; flex-wrap:wrap; gap:0; align-items:center; margin-top:18px; font-size:.82rem;
+    color:var(--ink-soft);
+  }
+  .career-timeline .tl-step{
+    background:var(--chip-bg); border:1px solid var(--line); border-radius:999px;
+    padding:6px 14px; white-space:nowrap;
+  }
+  .career-timeline .tl-arrow{color:var(--ink-faint); padding:0 8px; font-size:.8rem;}
+
+  /* Color key */
+  .color-key{display:flex; flex-wrap:wrap; gap:14px; font-size:.76rem; color:var(--ink-faint); margin-top:14px;}
+  .color-key .ck-item{display:flex; align-items:center; gap:6px;}
+  .color-key .ck-dot{width:9px; height:9px; border-radius:50%; display:inline-block;}
 
   /* HERO */
   header.hero{padding:88px 0 56px; border-bottom:1px solid var(--line);}
@@ -84,6 +112,8 @@
   .dnode-accent{fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.4;}
   .dnode-accent2{fill:var(--accent2-soft); stroke:var(--accent2); stroke-width:1.4;}
   .dnode-accent3{fill:var(--accent3-soft); stroke:var(--accent3); stroke-width:1.4;}
+  .dnode-gov{fill:var(--gov-soft); stroke:var(--gov); stroke-width:1.4;}
+  .dnode-future{fill:var(--future-soft); stroke:var(--future); stroke-width:1.2; stroke-dasharray:3,3;}
   .dtext{fill:var(--ink); font-size:12.5px; font-family:inherit;}
   .dtext-soft{fill:var(--ink-soft); font-size:11px; font-family:inherit;}
   .dtext-accent{fill:var(--accent); font-size:11px; font-weight:700; font-family:inherit;}
@@ -127,8 +157,8 @@
 
   /* Roadmap */
   .road-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px;}
-  .road-card{background:var(--bg-alt); border:1px solid var(--line); border-radius:var(--radius); padding:18px 20px;}
-  .road-card h4{margin:0 0 10px; font-size:.92rem; color:var(--accent);}
+  .road-card{background:var(--bg-alt); border:1px solid var(--line); border-left:3px solid var(--future); border-radius:var(--radius); padding:18px 20px;}
+  .road-card h4{margin:0 0 10px; font-size:.92rem; color:var(--future);}
   .road-card ul{margin:0; padding-left:18px; font-size:.86rem; color:var(--ink-soft);}
   .road-card li{margin-bottom:6px;}
 
@@ -183,6 +213,19 @@
   </div>
 </header>
 
+<section class="career-bg">
+  <div class="wrap">
+    <p class="lead">웹개발자로 시작해 SI/SM 중심 IT기업을 10년 이상 운영했고, 이커머스·콘텐츠·스타트업 기획을 직접 경험했습니다. 현재는 이 경험을 AI/AX 업무시스템 설계와 자동화로 연결하고 있습니다.</p>
+    <div class="career-timeline">
+      <span class="tl-step">Web Development</span><span class="tl-arrow">→</span>
+      <span class="tl-step">SI/SM &amp; IT Business</span><span class="tl-arrow">→</span>
+      <span class="tl-step">Commerce / Content</span><span class="tl-arrow">→</span>
+      <span class="tl-step">Service Planning</span><span class="tl-arrow">→</span>
+      <span class="tl-step">AI / AX</span>
+    </div>
+  </div>
+</section>
+
 <main class="wrap">
 
   <!-- WHY -->
@@ -199,6 +242,7 @@
     <span class="eyebrow">How</span>
     <h2 class="sec-title">업무를 AI와 사람이 함께 수행하는 구조로 바꾸는 방법</h2>
     <p class="lead">완성된 독점 방법론은 아닙니다. 실제 운영 경험과 다양한 AX 사례연구를 통해, 현재 다음과 같은 실무적 접근으로 구조화해서 쓰고 있습니다.</p>
+    <p class="lead" style="margin-top:10px;"><b>도구를 먼저 선택하지 않고, 업무 특성과 제약조건을 먼저 정의합니다.</b></p>
 
     <div class="diagram">
       <svg viewBox="0 0 900 90" role="img" aria-label="Understand to Standardize 10단계 흐름">
@@ -242,6 +286,7 @@
       <tr><td>고위험 의사결정</td><td>AI Support</td><td class="hi">최종 승인 필수</td></tr>
       <tr><td>예외가 많음</td><td>Agent + Escalation</td><td class="hi">높음</td></tr>
     </table>
+    <p class="legend" style="margin-top:12px;">실제 설계에서는 Script·SaaS·API·RPA·문서 AI·Agent·Custom Development 등 여러 구현수단을 함께 비교하며, 특정 제품이나 기술을 미리 정답으로 두지 않습니다. (예: RPA는 n8n류, 문서분석은 NotebookLM류, 에이전트 빌더는 Dify류 등 구체적 도구까지 놓고 검토)</p>
   </section>
 
   <!-- ARCHITECTURE -->
@@ -264,13 +309,13 @@
         <path d="M420,56 L610,96" class="dline-auto"/>
 
         <!-- ATLAS -->
-        <rect x="60" y="98" width="180" height="60" rx="10" class="dnode-accent"/>
+        <rect x="60" y="98" width="180" height="60" rx="10" class="dnode-gov"/>
         <text x="150" y="122" text-anchor="middle" class="dtext" font-weight="700">ATLAS</text>
         <text x="150" y="138" text-anchor="middle" class="dtext-soft">Governance</text>
         <text x="150" y="152" text-anchor="middle" class="dtext-soft">Standard · Audit</text>
 
         <!-- Claude/Codex -->
-        <rect x="290" y="98" width="180" height="60" rx="10" class="dnode"/>
+        <rect x="290" y="98" width="180" height="60" rx="10" class="dnode-accent3"/>
         <text x="380" y="122" text-anchor="middle" class="dtext" font-weight="700">Claude / Codex</text>
         <text x="380" y="138" text-anchor="middle" class="dtext-soft">Interactive</text>
         <text x="380" y="152" text-anchor="middle" class="dtext-soft">AI Workers</text>
@@ -292,15 +337,15 @@
 
         <!-- workspace boxes -->
         <g>
-          <rect x="60" y="216" width="120" height="42" rx="8" class="dnode"/>
+          <rect x="60" y="216" width="120" height="42" rx="8" class="dnode-accent"/>
           <text x="120" y="242" text-anchor="middle" class="dtext">LEGAL</text>
-          <rect x="200" y="216" width="120" height="42" rx="8" class="dnode"/>
+          <rect x="200" y="216" width="120" height="42" rx="8" class="dnode-accent"/>
           <text x="260" y="242" text-anchor="middle" class="dtext">VTR / PS</text>
-          <rect x="340" y="216" width="120" height="42" rx="8" class="dnode"/>
+          <rect x="340" y="216" width="120" height="42" rx="8" class="dnode-accent"/>
           <text x="400" y="242" text-anchor="middle" class="dtext">DEV</text>
-          <rect x="480" y="216" width="120" height="42" rx="8" class="dnode"/>
+          <rect x="480" y="216" width="120" height="42" rx="8" class="dnode-accent"/>
           <text x="540" y="242" text-anchor="middle" class="dtext">CONTENT</text>
-          <rect x="620" y="216" width="80" height="42" rx="8" class="dnode"/>
+          <rect x="620" y="216" width="80" height="42" rx="8" class="dnode-accent"/>
           <text x="660" y="242" text-anchor="middle" class="dtext-soft">...</text>
         </g>
 
@@ -324,6 +369,13 @@
         <b>ATLAS</b> — Workspace 간 표준·감사·인수인계를 담당하는 Governance Layer&nbsp;&nbsp;·&nbsp;&nbsp;
         <b>Claude Code / Codex</b> — 각 Workspace에서 대화형으로 작업하는 Interactive AI Layer&nbsp;&nbsp;·&nbsp;&nbsp;
         <b>OpenClaw</b> — 정기·상시 업무를 수행하는 Autonomous Agent Runtime
+      </div>
+      <div class="color-key">
+        <span class="ck-item"><span class="ck-dot" style="background:var(--gov);"></span>Governance</span>
+        <span class="ck-item"><span class="ck-dot" style="background:var(--accent);"></span>System / Tool / Workflow</span>
+        <span class="ck-item"><span class="ck-dot" style="background:var(--accent3);"></span>AI / Agent</span>
+        <span class="ck-item"><span class="ck-dot" style="background:var(--accent2);"></span>Human Decision / Approval / Risk</span>
+        <span class="ck-item"><span class="ck-dot" style="background:var(--future);"></span>구축·고도화 중</span>
       </div>
     </div>
 
@@ -366,11 +418,11 @@
 
       <dl class="case-steps">
         <dt>문제</dt><dd>업무를 바로 수정하면 근거 없는 판단이 되기 쉽다.</dd>
-        <dt>설계</dt><dd>정의→근거→진단→설계→평가→증명 6단계, 위험등급별 자동 깊이조절. 타 워크스페이스는 직접 수정하지 않고 승인 후 해당 워크스페이스 AI를 실행시킴.</dd>
-        <dt>현재 구조</dt><dd>DEFINE→EVIDENCE→DIAGNOSE→DESIGN→EVALUATE→PROVE, Risk Level L1~L4.</dd>
-        <dt>적용</dt><dd>세무·명리·부동산·투자·에이전트 실험실 등 13개 사례에 실제 적용.</dd>
+        <dt>설계</dt><dd>정의→근거→진단→설계→평가→증명 6단계, 위험등급별 자동 깊이조절. DESIGN 단계는 Workflow 재설계와 Tool-neutral Solution Design을 함께 다룹니다 — AI Workspace나 Agent 방식을 미리 정답으로 가정하지 않고, 업무 특성·데이터·보안·비용·운영조건을 고려해 SaaS·API·RPA·AI Agent·Custom Development 등 가능한 방식을 비교하고 필요한 조합을 설계하는 것을 원칙으로 삼습니다. 타 워크스페이스는 직접 수정하지 않고 승인 후 해당 워크스페이스 AI를 실행시킴.</dd>
+        <dt>현재 구조</dt><dd>DEFINE→EVIDENCE→DIAGNOSE→DESIGN(Workflow 재설계+도구중립 비교)→EVALUATE→PROVE, Risk Level L1~L4.</dd>
+        <dt>적용</dt><dd>Workspace·프로젝트 대상 13개 진단 사례 적용(세무·명리·부동산·투자·에이전트 실험실 등).</dd>
         <dt>교훈</dt><dd>상시 자동화는 설계만으로 끝나지 않는다 — 독립 감사에서 실제 버그가 발견돼 수정 후 파일럿(수동 실행)으로 검증 중.</dd>
-        <dt>다음</dt><dd>상시 리서치 자동화의 자동 트리거 전환(현재는 의도적으로 보류).</dd>
+        <dt>다음</dt><dd>시장 AI/자동화 기술지형과 실제 적용사례를 지속적으로 축적해 도구중립 비교 기준을 고도화하고 있습니다. 상시 리서치 자동화의 자동 트리거 전환도 현재는 의도적으로 보류 중입니다.</dd>
       </dl>
       <div class="case-status">현재: <b>진단 Pipeline은 실사용 중</b>, 상시 리서치 자동화는 검증 단계</div>
 
@@ -426,12 +478,12 @@
 
       <div class="diagram" style="margin-top:0;">
         <svg viewBox="0 0 700 130" role="img" aria-label="VTR PS DEV 흐름">
-          <rect x="10" y="30" width="190" height="66" rx="10" class="dnode-accent"/>
+          <rect x="10" y="30" width="190" height="66" rx="10" class="dnode-accent2"/>
           <text x="105" y="54" text-anchor="middle" class="dtext" font-weight="700">VTR</text>
           <text x="105" y="70" text-anchor="middle" class="dtext-soft">만들 가치가 있는가</text>
           <text x="105" y="84" text-anchor="middle" class="dtext-soft" style="font-size:10px;">Business Validation</text>
 
-          <rect x="255" y="30" width="190" height="66" rx="10" class="dnode-accent2"/>
+          <rect x="255" y="30" width="190" height="66" rx="10" class="dnode-accent"/>
           <text x="350" y="54" text-anchor="middle" class="dtext" font-weight="700">PS</text>
           <text x="350" y="70" text-anchor="middle" class="dtext-soft">무엇을 어떻게 만들 것인가</text>
           <text x="350" y="84" text-anchor="middle" class="dtext-soft" style="font-size:10px;">Product / UX / Architecture</text>

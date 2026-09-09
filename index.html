@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>김춘식 — AI/AX 시스템 설계·구축</title>
+<meta name="description" content="김춘식 — AI Agent·Multi-Agent·Claude Code/Codex 기반 AI/AX 시스템 설계·구축·업무자동화 포트폴리오" />
+<style>
+  :root{
+    --bg: #fafaf9;
+    --bg-alt: #ffffff;
+    --ink: #1c1c1e;
+    --ink-soft: #52525b;
+    --line: #e4e4e7;
+    --accent: #3454d1;
+    --accent-soft: #eef1fd;
+    --chip-bg: #f4f4f5;
+    --radius: 14px;
+    --maxw: 880px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg: #131316;
+      --bg-alt: #1b1b1f;
+      --ink: #f2f2f4;
+      --ink-soft: #a5a5ad;
+      --line: #2b2b30;
+      --accent: #7d93ff;
+      --accent-soft: #22264a;
+      --chip-bg: #201f24;
+    }
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family: "Pretendard","맑은 고딕","Apple SD Gothic Neo",system-ui,-apple-system,sans-serif;
+    line-height:1.65; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+  header.hero{
+    padding:72px 0 48px; border-bottom:1px solid var(--line);
+  }
+  .hero-inner{display:flex; gap:36px; align-items:center; flex-wrap:wrap;}
+  .avatar{
+    width:132px; height:132px; border-radius:50%; overflow:hidden;
+    border:3px solid var(--bg-alt); box-shadow:0 0 0 1px var(--line), 0 12px 30px -12px rgba(0,0,0,.25);
+    flex-shrink:0;
+  }
+  .avatar img{width:100%; height:100%; object-fit:cover; display:block;}
+  .hero-text{flex:1; min-width:260px;}
+  .eyebrow{
+    display:inline-block; font-size:.78rem; font-weight:600; letter-spacing:.08em;
+    color:var(--accent); text-transform:uppercase; margin-bottom:10px;
+  }
+  h1{font-size:2.1rem; margin:0 0 6px; letter-spacing:-.01em;}
+  .role{font-size:1.15rem; font-weight:600; color:var(--ink); margin:0 0 4px;}
+  .subrole{font-size:.95rem; color:var(--ink-soft); margin:0 0 16px;}
+  .contact-row{display:flex; gap:16px; flex-wrap:wrap; font-size:.88rem; color:var(--ink-soft);}
+  .contact-row a{color:var(--ink-soft); text-decoration:none; border-bottom:1px dotted var(--line);}
+  .contact-row a:hover{color:var(--accent); border-color:var(--accent);}
+
+  section{padding:44px 0; border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  h2{
+    font-size:.82rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 20px;
+  }
+  p.lead{font-size:1.04rem; color:var(--ink); max-width:70ch;}
+  p.lead + p.lead{margin-top:10px;}
+  .tagline{
+    margin-top:18px; font-size:.92rem; color:var(--ink-soft); font-style:italic;
+    border-left:2px solid var(--accent); padding-left:14px;
+  }
+
+  .comp-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px;}
+  .comp-card{
+    background:var(--bg-alt); border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px 18px; font-size:.92rem;
+  }
+
+  .project{
+    background:var(--bg-alt); border:1px solid var(--line); border-radius:var(--radius);
+    padding:26px 26px 22px; margin-bottom:18px;
+  }
+  .project:last-child{margin-bottom:0;}
+  .project h3{font-size:1.05rem; margin:0 0 6px;}
+  .project .meta{font-size:.82rem; color:var(--ink-soft); margin-bottom:14px;}
+  .stat-row{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px;}
+  .stat{
+    background:var(--accent-soft); color:var(--accent); font-weight:700; font-size:.82rem;
+    padding:6px 12px; border-radius:999px;
+  }
+  .project ul{margin:0; padding-left:20px; font-size:.9rem; color:var(--ink-soft);}
+  .project li{margin-bottom:6px;}
+  .project li:last-child{margin-bottom:0;}
+
+  .skills-group{margin-bottom:16px;}
+  .skills-group:last-child{margin-bottom:0;}
+  .skills-label{font-size:.8rem; font-weight:700; color:var(--ink-soft); margin-bottom:8px; text-transform:uppercase; letter-spacing:.06em;}
+  .chip-row{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{
+    background:var(--chip-bg); border:1px solid var(--line); color:var(--ink);
+    font-size:.82rem; padding:5px 12px; border-radius:8px;
+  }
+
+  .career-item{padding:14px 0; border-bottom:1px dashed var(--line);}
+  .career-item:last-child{border-bottom:none;}
+  .career-head{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; font-size:.94rem; font-weight:600;}
+  .career-period{color:var(--ink-soft); font-weight:500; font-size:.85rem;}
+  .career-detail{font-size:.86rem; color:var(--ink-soft); margin-top:4px;}
+
+  .edu-item{font-size:.9rem; color:var(--ink-soft); padding:6px 0;}
+  .edu-item b{color:var(--ink); font-weight:600;}
+
+  footer{padding:40px 0 60px; text-align:center; color:var(--ink-soft); font-size:.85rem;}
+  footer a{color:var(--accent); text-decoration:none;}
+
+  @media (max-width:520px){
+    header.hero{padding:48px 0 32px;}
+    .hero-inner{flex-direction:column; text-align:center;}
+    .contact-row{justify-content:center;}
+    h1{font-size:1.7rem;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap hero-inner">
+    <div class="avatar"><img src="assets/profile.png" alt="김춘식 프로필 사진" /></div>
+    <div class="hero-text">
+      <span class="eyebrow">AI / AX Portfolio</span>
+      <h1>김춘식</h1>
+      <p class="role">AI/AX 시스템 설계·구축 · 업무자동화</p>
+      <p class="subrole">AI Agent · Multi-Agent · Claude Code/Codex · Workflow Automation</p>
+      <div class="contact-row">
+        <span>010-5017-4238</span>
+        <a href="mailto:cskim4238@daum.net">cskim4238@daum.net</a>
+        <span>서울시 구로구</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="summary">
+    <h2>Summary</h2>
+    <p class="lead">Claude Code·Codex·ChatGPT·OpenClaw를 활용해 15개 이상의 도메인별 AI Workspace와 Multi-Agent 업무환경을 직접 설계·구축·운영하고 있습니다.</p>
+    <p class="lead">현업 업무를 Task 단위로 분해해 사람이 판단할 영역과 AI가 수행할 영역을 구분하는 자동화 설계 방법론을 직접 만들고, 실제 프로젝트에 적용해 검증했습니다.</p>
+    <p class="lead">웹개발·SI/SM·IT기업 운영·영업·고객관리 경험을 바탕으로 기술과 현업 양쪽을 이해하며, AI/AX 시스템 설계·구축 및 업무자동화 역할을 지향합니다.</p>
+    <p class="tagline">희망 역할: AI/AX 시스템 기획·개발 · 업무자동화 · AI Agent/Multi-Agent · AI 서비스·PoC 기획·구축 · AX 컨설팅</p>
+  </section>
+
+  <section id="competencies">
+    <h2>Core Competencies</h2>
+    <div class="comp-grid">
+      <div class="comp-card">15개 이상 도메인 AI Workspace / Multi-Agent 시스템 설계·운영</div>
+      <div class="comp-card">automation-pipeline-design — 자동화 설계 방법론 직접 구축, 실전 3건 적용·검증</div>
+      <div class="comp-card">OpenClaw 기반 AI Agent 3개, Cron Job 11개 상시운영 (Slack/Telegram 자동보고)</div>
+      <div class="comp-card">YouTube Data API 기반 채널 155개 분석, 9단계 Workflow, 실행로그 3,234줄</div>
+      <div class="comp-card">웹개발·SI/SM·IT기업 운영·영업·고객관리 경험</div>
+      <div class="comp-card">실사용 검증 중 PowerShell 예외처리·인코딩 오류 2건 발견→재현→원인분석→수정→재검증</div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2>Selected AI/AX Projects</h2>
+
+    <div class="project">
+      <h3>Multi-Agent 기반 AI Workspace 운영·거버넌스</h3>
+      <div class="meta">개인 AI/AX 시스템 구축 프로젝트 · ~ 현재</div>
+      <div class="stat-row">
+        <span class="stat">Workspace 15개+</span>
+        <span class="stat">배포·검증 9개 WS</span>
+        <span class="stat">AI Agent 3개</span>
+        <span class="stat">Cron Job 11개</span>
+      </div>
+      <ul>
+        <li>콘텐츠·투자·부동산·법률·세무·개발 등 전문업무를 독립 AI Workspace로 분리·운영</li>
+        <li>workspace-builder 구축 — 인터뷰만으로 폴더·문서·Skill 자동생성</li>
+        <li>Claude Code/Codex Checkpoint 기반 인수인계 구조 설계, 9개 Workspace에 실제 배포·검증</li>
+        <li>실사용 검증 중 PowerShell 예외처리 누락·인코딩 오류 2건 발견 → 재현 → 원인분석 → 수정 → 재검증</li>
+        <li>OpenClaw AI Agent 3개(기획·콘텐츠/투자분석/품질감사) 분리 운영, Slack/Telegram 자동보고</li>
+      </ul>
+    </div>
+
+    <div class="project">
+      <h3>automation-pipeline-design</h3>
+      <div class="meta">자동화 설계 방법론 자체 개발</div>
+      <div class="stat-row">
+        <span class="stat">실전 적용 3건</span>
+        <span class="stat">3역할 품질 Gate</span>
+      </div>
+      <ul>
+        <li>현업 인터뷰 → 업무정의 → Task 분해 → 자동화 가능성 판단 → AI/Tool 연결 → Dry Run → 품질검증 → 사람 승인 → 실행</li>
+        <li>Orchestrator + Sub-Agent 역할 분리, Planner/Generator/Evaluator 3역할 품질 Gate 내장</li>
+        <li>실제 3개 프로젝트에 재사용: YouTube 경쟁분석 자동화 · GPTers 커뮤니티 정보수집 자동화 · workspace-builder 자체 설계</li>
+      </ul>
+    </div>
+
+    <div class="project">
+      <h3>YouTube Data API 기반 시장·경쟁분석 자동화</h3>
+      <div class="meta">데이터 수집·분석 자동화 파이프라인</div>
+      <div class="stat-row">
+        <span class="stat">채널 155개</span>
+        <span class="stat">9단계 파이프라인</span>
+        <span class="stat">실행로그 3,234줄</span>
+      </div>
+      <ul>
+        <li>국내 경쟁채널 155개 수집·분석 — 리서치→채널분석→영상수집→자막추출→패턴분석→아이디어도출→대본생성→리포트→운영반영</li>
+        <li>실제 API 호출·데이터 처리로 실행 로그 3,234줄 확보 — 실제 가동된 프로젝트</li>
+        <li>결과를 실제 채널 운영 의사결정에 반영</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <div class="skills-group">
+      <div class="skills-label">AI / AX</div>
+      <div class="chip-row">
+        <span class="chip">Claude Code</span><span class="chip">Codex</span><span class="chip">ChatGPT</span>
+        <span class="chip">OpenClaw</span><span class="chip">AI Agent</span><span class="chip">Multi-Agent Workflow</span>
+        <span class="chip">Human-in-the-loop</span><span class="chip">AI Workspace</span><span class="chip">Workflow Automation</span>
+      </div>
+    </div>
+    <div class="skills-group">
+      <div class="skills-label">System / Operation</div>
+      <div class="chip-row">
+        <span class="chip">Docker</span><span class="chip">Cron Job</span><span class="chip">Slack</span>
+        <span class="chip">Telegram</span><span class="chip">YouTube Data API</span><span class="chip">Obsidian</span>
+      </div>
+    </div>
+    <div class="skills-group">
+      <div class="skills-label">Legacy Development</div>
+      <div class="chip-row">
+        <span class="chip">Java</span><span class="chip">JSP</span><span class="chip">ASP</span><span class="chip">PHP</span>
+        <span class="chip">Oracle</span><span class="chip">MS-SQL</span><span class="chip">MySQL</span>
+        <span class="chip">Unix</span><span class="chip">Windows</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="career">
+    <h2>과거 Career</h2>
+
+    <div class="career-item">
+      <div class="career-head"><span>㈜펄소프트 · 대표이사</span><span class="career-period">2019.02 – 2025.12</span></div>
+      <div class="career-detail">SI/SM·솔루션 유통 사업운영, 온라인 유통·이커머스 사업기획, 고객사·거래처 관리 및 영업, 공공·금융·대기업 대상 SI/SM 프로젝트 사업 수행</div>
+    </div>
+    <div class="career-item">
+      <div class="career-head"><span>㈜펄소프트 · 대표이사</span><span class="career-period">2014.11 – 2018.03</span></div>
+      <div class="career-detail">유통·물류분야 SI/SM 사업 운영(지오영그룹 차세대프로젝트 등), 거래처 개척 및 프로젝트 관리</div>
+    </div>
+    <div class="career-item">
+      <div class="career-head"><span>프리랜서 개발자 (과장~차장)</span><span class="career-period">2011.11 – 2014.05</span></div>
+      <div class="career-detail">보건복지부·산업은행·한전KDN 프로젝트 개발 참여</div>
+    </div>
+    <div class="career-item">
+      <div class="career-head"><span>㈜피디스타 · 대표이사</span><span class="career-period">2006.09 – 2011.09</span></div>
+      <div class="career-detail">ITO·SI/SM 사업 운영, 삼성·LG 관계사 프로젝트 수행 및 SI Outsourcing 인력 30~50명 운영. 영업·제안·고객관리·조직운영.</div>
+    </div>
+    <div class="career-item">
+      <div class="career-head"><span>웹개발자 / 프리랜서</span><span class="career-period">2001.06 – 2006.08</span></div>
+      <div class="career-detail">Java·ASP·PHP 기반 기업·공공·중견기업 웹/SI 프로젝트 수행 (아인텍정보기술·두원서미트·툴앤톨스·피디스타 SI사업부 등)</div>
+    </div>
+  </section>
+
+  <section id="education">
+    <h2>Education</h2>
+    <div class="edu-item"><b>금천고등학교</b> (이과) 졸업 — 1992.03 – 1995.02</div>
+    <div class="edu-item"><b>단국대학교</b> 전자공학과 수료 — 1996.03 – 2000.08</div>
+    <div class="edu-item"><b>한국방송통신대학교</b>(편입) 경제학과 졸업 — 2005.02 – 2023.02</div>
+    <div class="edu-item"><b>원광디지털대학교</b>(편입) 얼굴경영학과 휴학중 — 2023.03 –</div>
+    <div class="edu-item"><b>경희사이버대학교</b>(편입) 자산관리학부 휴학중 — 2023.09 –</div>
+  </section>
+
+  <section id="etc">
+    <h2>기타 활동</h2>
+    <div class="edu-item">AI 학습 커뮤니티(GPTers 등) 스터디 운영 및 학습반장 경험</div>
+    <div class="edu-item">YouTube 콘텐츠 기획·제작·운영 경험</div>
+    <div class="edu-item">AI/AX 프로젝트 및 업무자동화 사례 지속 학습·문서화</div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>010-5017-4238 · <a href="mailto:cskim4238@daum.net">cskim4238@daum.net</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

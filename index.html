@@ -110,7 +110,9 @@
     background:var(--bg-alt); border:1px solid var(--line); border-radius:var(--radius);
     padding:22px 18px 14px; margin:26px 0 10px; overflow-x:auto;
   }
-  .diagram svg{display:block; margin:0 auto; max-width:100%; height:auto;}
+  .diagram svg{display:block; margin:0 auto; height:auto;}
+  /* 넓은 화면에서만 컨테이너에 맞춰 축소 — 모바일에서는 원래 크기 유지 + 가로 스크롤(overflow-x:auto)로 글자 크기 보존 */
+  @media (min-width:760px){ .diagram svg{max-width:100%;} }
   .legend{font-size:.78rem; color:var(--ink-faint); margin-top:10px; line-height:1.9;}
   .legend b{color:var(--ink-soft); font-weight:700;}
   .dnode{fill:var(--bg); stroke:var(--line); stroke-width:1.4;}
@@ -128,7 +130,8 @@
   .dline-auto{stroke:var(--accent3); stroke-width:1.5; fill:none; stroke-dasharray:1,3.5; stroke-linecap:round;}
 
   /* Matrix table */
-  table.matrix{width:100%; border-collapse:collapse; margin:20px 0 6px; font-size:.88rem;}
+  .matrix-scroll{overflow-x:auto; margin:20px 0 6px;}
+  table.matrix{width:100%; min-width:480px; border-collapse:collapse; font-size:.88rem;}
   table.matrix th, table.matrix td{border:1px solid var(--line); padding:9px 12px; text-align:left;}
   table.matrix th{background:var(--chip-bg); font-weight:700; color:var(--ink-soft); font-size:.78rem; text-transform:uppercase; letter-spacing:.03em;}
   table.matrix td.hi{color:var(--accent2); font-weight:700;}
@@ -213,10 +216,21 @@
   footer a{color:var(--accent); text-decoration:none;}
 
   @media (max-width:560px){
+    .wrap{padding:0 16px;}
     header.hero{padding:56px 0 36px;}
     .hero-inner{flex-direction:column; text-align:center;}
     h1.hero-line{font-size:1.5rem;}
     .case{padding:22px 18px;}
+    .section-head{padding:14px 16px;}
+    h2.sec-title{font-size:1.15rem;}
+    .case-steps{grid-template-columns:1fr; gap:4px;}
+    .case-steps dt{margin-top:8px;}
+    .case-steps dd{padding-bottom:4px;}
+    .contrib-item{flex-direction:column; align-items:flex-start; gap:4px;}
+    .contrib-item .k{white-space:normal;}
+    .matrix-scroll{overflow-x:auto;}
+    table.matrix{font-size:.82rem;}
+    .career-timeline{font-size:.76rem;}
   }
 </style>
 </head>
@@ -269,7 +283,7 @@
     <p class="lead" style="margin-top:10px;"><b>도구를 먼저 선택하지 않고, 업무 특성과 제약조건을 먼저 정의합니다.</b></p>
 
     <div class="diagram">
-      <svg viewBox="0 0 900 90" role="img" aria-label="Understand to Standardize 10단계 흐름">
+      <svg viewBox="0 0 900 90" role="img" aria-label="Understand to Standardize 10단계 흐름" width="900" height="90">
         <text x="10" y="20" class="dtext-accent">UNDERSTAND</text>
         <text x="10" y="36" class="dtext-soft">현재 업무 이해</text>
         <text x="100" y="52" class="dtext-soft">→</text>
@@ -300,6 +314,7 @@
 
     <h3 style="font-size:1rem; margin:32px 0 4px;">Automation Decision Matrix</h3>
     <p class="lead" style="font-size:.92rem;">실제 업무는 한 가지 기준으로만 나뉘지 않기 때문에, 아래 기준으로 접근 방식과 사람 개입 정도를 함께 판단합니다.</p>
+    <div class="matrix-scroll">
     <table class="matrix">
       <tr><th>업무 특성</th><th>우선 접근</th><th>사람 개입</th></tr>
       <tr><td>규칙이 명확</td><td>Script / Automation</td><td>낮음</td></tr>
@@ -310,6 +325,7 @@
       <tr><td>고위험 의사결정</td><td>AI Support</td><td class="hi">최종 승인 필수</td></tr>
       <tr><td>예외가 많음</td><td>Agent + Escalation</td><td class="hi">높음</td></tr>
     </table>
+    </div>
     <p class="legend" style="margin-top:12px;">실제 설계에서는 Script·SaaS·API·RPA·문서 AI·Agent·Custom Development 등 여러 구현수단을 함께 비교하며, 특정 제품이나 기술을 미리 정답으로 두지 않습니다. (예: RPA는 n8n류, 문서분석은 NotebookLM류, 에이전트 빌더는 Dify류 등 구체적 도구까지 놓고 검토)</p>
   </section>
 
@@ -323,7 +339,7 @@
     <p class="lead">15개 이상의 Domain Workspace를 구축하고 업무별로 운영·실험하고 있으며, 완성도와 실사용 수준은 워크스페이스마다 다릅니다.</p>
 
     <div class="diagram">
-      <svg viewBox="0 0 760 430" role="img" aria-label="전체 아키텍처 다이어그램">
+      <svg viewBox="0 0 760 430" role="img" aria-label="전체 아키텍처 다이어그램" width="760" height="430">
         <!-- HUMAN -->
         <rect x="290" y="10" width="180" height="46" rx="10" class="dnode-accent2"/>
         <text x="380" y="30" text-anchor="middle" class="dtext" font-weight="700">HUMAN</text>
@@ -426,7 +442,7 @@
       <div class="case-sub">Diagnosis</div>
 
       <div class="diagram" style="margin-top:0;">
-        <svg viewBox="0 0 700 70" role="img" aria-label="AX-ARCHITECT 6단계">
+        <svg viewBox="0 0 700 70" role="img" aria-label="AX-ARCHITECT 6단계" width="700" height="70">
           <g font-size="12">
             <rect x="0" y="10" width="100" height="34" rx="8" class="dnode-accent"/><text x="50" y="31" text-anchor="middle" class="dtext">DEFINE</text>
             <text x="112" y="31" class="dtext-soft">→</text>
@@ -473,7 +489,7 @@
       <div class="case-sub">High-stakes Knowledge Work Design</div>
 
       <div class="diagram" style="margin-top:0;">
-        <svg viewBox="0 0 700 60" role="img" aria-label="LEGAL-WS 5단계">
+        <svg viewBox="0 0 700 60" role="img" aria-label="LEGAL-WS 5단계" width="700" height="60">
           <g font-size="11.5">
             <rect x="0" y="8" width="118" height="34" rx="8" class="dnode-accent2"/><text x="59" y="29" text-anchor="middle" class="dtext">①자료 인덱스</text>
             <text x="128" y="29" class="dtext-soft">→</text>
@@ -505,7 +521,7 @@
       <div class="case-sub">사업검증 → 제품기획·설계 → Multi-Agent 개발을 연결하는 End-to-End Workflow &nbsp;·&nbsp; VTR-WS × PS-WS × DEV-WS</div>
 
       <div class="diagram" style="margin-top:0;">
-        <svg viewBox="0 0 700 130" role="img" aria-label="VTR PS DEV 흐름">
+        <svg viewBox="0 0 700 130" role="img" aria-label="VTR PS DEV 흐름" width="700" height="130">
           <rect x="10" y="30" width="190" height="66" rx="10" class="dnode-accent2"/>
           <text x="105" y="54" text-anchor="middle" class="dtext" font-weight="700">VTR</text>
           <text x="105" y="70" text-anchor="middle" class="dtext-soft">만들 가치가 있는가</text>
@@ -556,7 +572,7 @@
       <div class="case-status"><span class="tag">현재</span><b>VTR↔PS 흐름은 검증</b>, DEV 연계는 계속 고도화 중</div>
 
       <div class="diagram">
-        <svg viewBox="0 0 700 150" role="img" aria-label="DEV 내부 구조">
+        <svg viewBox="0 0 700 150" role="img" aria-label="DEV 내부 구조" width="700" height="150">
           <rect x="20" y="15" width="150" height="50" rx="10" class="dnode-accent3"/>
           <text x="95" y="36" text-anchor="middle" class="dtext" font-weight="700">Claude</text>
           <text x="95" y="52" text-anchor="middle" class="dtext-soft" style="font-size:10px;">PM · 모듈분해</text>
@@ -630,7 +646,7 @@
     </details>
 
     <div class="diagram">
-      <svg viewBox="0 0 620 220" role="img" aria-label="AX Learning Loop">
+      <svg viewBox="0 0 620 220" role="img" aria-label="AX Learning Loop" width="620" height="220">
         <g font-size="10.5">
           <circle cx="310" cy="110" r="95" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="3,4"/>
           <rect x="255" y="6" width="110" height="30" rx="7" class="dnode-accent"/><text x="310" y="26" text-anchor="middle" class="dtext" style="font-size:10.5px;">실제 업무</text>
